@@ -1,0 +1,27 @@
+{
+  "all_22_quarters_present": true,
+  "duplicate_integrations_at_any_quarter_end": {},
+  "net_additions_reconciliation_all_match": true,
+  "net_additions_reconciliation_mismatches": [],
+  "largest_quarterly_total_increase": {
+    "quarter": "2024 Q3",
+    "total_net_additions": 37
+  },
+  "bulk_addition_commits_ge5": [
+    {
+      "repository": "core",
+      "first_added_commit": "79dbdd1ec",
+      "first_added_quarter": "2023 Q1",
+      "n": 8
+    }
+  ],
+  "bulk_commits_dominating_a_quarter_(>=40pct_of_that_quarters_New_Total)": [
+    {
+      "repository": "core",
+      "first_added_commit": "79dbdd1ec",
+      "first_added_quarter": "2023 Q1",
+      "n": 8,
+      "share_of_that_quarters_New_Total": 0.44
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+pandas>=1.5
+numpy>=1.23
+requests>=2.28
+packaging>=21
+# only for --pypi-source bigquery:
+google-cloud-bigquery>=3.11
+db-dtypes>=1.1

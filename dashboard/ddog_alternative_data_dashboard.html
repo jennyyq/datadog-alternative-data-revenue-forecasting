@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datadog Alternative-Data Monitor</title>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<style>
+:root{
+  --blue:#1a73e8; --orange:#E8710A; --green:#34a853; --purple:#632CA6;
+  --amber:#c9a227; --red:#c0392b; --border:#dcdcdc; --card-bg:#fafafa;
+  --text:#1c1c1c; --text-muted:#5a5a5a; --text-faint:#8a8a8a;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:var(--text); background:#ffffff; font-size:14px; line-height:1.5;
+}
+.wrap{max-width:1240px; margin:0 auto; padding:0 22px 60px;}
+a{color:var(--blue);}
+
+/* ---------- header ---------- */
+header.top{border-bottom:2px solid #1c1c1c; padding:22px 0 16px; margin-bottom:4px;}
+header.top h1{font-size:24px; margin:0 0 4px; font-weight:700; letter-spacing:-0.01em;}
+header.top .sub{color:var(--text-muted); font-size:13.5px;}
+.disclaimer{
+  background:#fff8ec; border:1px solid #e8c877; border-radius:4px; padding:9px 14px;
+  font-size:12.5px; color:#6b4e00; margin:14px 0 26px;
+}
+
+/* ---------- sections ---------- */
+section{margin:38px 0;}
+section h2{
+  font-size:16.5px; margin:0 0 14px; padding-bottom:6px; border-bottom:1px solid var(--border);
+  font-weight:700; letter-spacing:0.01em; color:#111;
+}
+section h2 .n{color:var(--purple); margin-right:6px;}
+.section-note{font-size:12px; color:var(--text-faint); font-style:italic; margin-top:6px;}
+
+/* ---------- KPI cards ---------- */
+.kpi-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px;}
+.kpi-card{
+  border:1px solid var(--border); border-radius:6px; background:var(--card-bg); padding:14px 15px;
+  position:relative;
+}
+.kpi-card h3{font-size:12.5px; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); margin:0 0 8px; font-weight:700;}
+.kpi-card .tooltip-icon{
+  display:inline-block; width:15px; height:15px; border-radius:50%; background:#ddd; color:#555;
+  font-size:10.5px; text-align:center; line-height:15px; cursor:help; margin-left:5px; font-style:normal;
+}
+.kpi-card .tooltip-icon:hover + .tooltip-box, .kpi-card .tooltip-icon:focus + .tooltip-box{display:block;}
+.tooltip-box{
+  display:none; position:absolute; z-index:20; top:30px; left:12px; right:12px; background:#222; color:#fff;
+  font-size:11.5px; line-height:1.45; padding:9px 11px; border-radius:5px; box-shadow:0 3px 10px rgba(0,0,0,0.18);
+}
+.kpi-value{font-size:25px; font-weight:700; margin:2px 0 2px;}
+.kpi-prior{font-size:11.5px; color:var(--text-muted); margin-bottom:9px;}
+.state-pill{
+  display:inline-block; font-size:11px; font-weight:700; padding:3px 9px; border-radius:11px; color:#fff;
+}
+.state-accelerating{background:var(--green);}
+.state-stable{background:var(--amber);}
+.state-decelerating{background:var(--red);}
+.state-volatile{background:var(--amber);}
+.state-strong{background:var(--green);}
+.kpi-card .method{font-size:11px; color:var(--text-faint); margin-top:9px; line-height:1.4;}
+.agent-kpi-row{font-size:12px; margin:7px 0; padding-top:7px; border-top:1px dashed #ddd;}
+.agent-kpi-row:first-of-type{border-top:none; margin-top:2px;}
+.agent-kpi-row .aq{color:var(--purple); font-weight:700; font-size:10.5px; text-transform:uppercase;}
+.agent-kpi-row .am{font-weight:600;}
+.agent-kpi-row .av{color:var(--text-muted);}
+.agent-group-label{font-size:10px; text-transform:uppercase; letter-spacing:0.04em; font-weight:700; margin-top:12px; padding-top:10px; border-top:1px solid #ddd;}
+.agent-group-label:first-of-type{margin-top:9px; padding-top:0; border-top:none;}
+.agent-group-direct{color:var(--purple);}
+.agent-group-adjacent{color:#5c7a89;}
+
+/* ---------- charts ---------- */
+.chart-block{border:1px solid var(--border); border-radius:6px; padding:16px 18px 10px; margin-bottom:22px; background:#fff;}
+.chart-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:6px;}
+.chart-head h4{margin:0; font-size:14px; font-weight:700;}
+.toggle-group{display:inline-flex; border:1px solid var(--border); border-radius:5px; overflow:hidden;}
+.toggle-btn{
+  background:#fff; border:none; border-right:1px solid var(--border); padding:5px 11px; font-size:11.5px;
+  cursor:pointer; color:var(--text-muted); font-weight:600;
+}
+.toggle-btn:last-child{border-right:none;}
+.toggle-btn.active{background:var(--purple); color:#fff;}
+.chart-note{font-size:11.5px; color:var(--text-faint); font-style:italic; margin:6px 2px 4px;}
+.chart-highlight-note{font-size:12px; margin:8px 2px 2px; padding:8px 10px; border-radius:5px; background:#f6f6f6;}
+.chart-highlight-note b.orange{color:var(--orange);}
+.chart-highlight-note b.green{color:var(--green);}
+
+/* ---------- table (Chart C compact table view) ---------- */
+#chartC{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+table.compact{width:100%; min-width:480px; border-collapse:collapse; font-size:12.5px; margin-top:6px;}
+table.compact th{text-align:right; padding:7px 8px; border-bottom:2px solid #333; font-size:11.5px; text-transform:uppercase; letter-spacing:0.03em; color:var(--text-muted);}
+table.compact th:first-child, table.compact td:first-child{text-align:left;}
+table.compact td{text-align:right; padding:7px 8px; border-bottom:1px solid #eee;}
+table.compact tr:nth-child(even){background:#fafafa;}
+td.hl-orange{background:#fff0dc; color:var(--orange); font-weight:700; border-radius:3px;}
+td.hl-green{background:#dff3e3; color:var(--green); font-weight:700; border-radius:3px;}
+table.audit-table{min-width:760px;}
+table.audit-table th, table.audit-table td{text-align:left; vertical-align:top;}
+table.audit-table td{font-size:12px;}
+.cat-tag{display:inline-block; font-size:9.5px; font-weight:700; text-transform:uppercase; padding:1.5px 6px; border-radius:8px; margin-left:5px; vertical-align:middle;}
+.cat-direct{background:rgba(99,44,166,0.14); color:#632CA6;}
+.cat-adjacent{background:rgba(92,122,137,0.16); color:#5c7a89;}
+.tier-pill{display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:9px; color:#fff;}
+.tier-t1{background:#632CA6;}
+.tier-t2{background:#8a8a8a;}
+.tier-t3{background:#b8a24a;}
+#sourceAuditAccordion{margin-top:14px;}
+#sourceAuditAccordion summary{font-size:12.5px; padding:9px 13px;}
+
+/* ---------- mechanism diagram ---------- */
+.mech-row{display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin-bottom:8px;}
+.mech-box{
+  flex:1 1 180px; border:1.6px solid; border-radius:6px; padding:12px 10px; text-align:center;
+  font-size:12.5px; font-weight:700; display:flex; align-items:center; justify-content:center; min-height:52px;
+}
+.mech-arrow{display:flex; align-items:center; font-size:18px; color:#777; padding:0 2px;}
+.mech-1{border-color:var(--blue); background:rgba(26,115,232,0.08);}
+.mech-2{border-color:var(--green); background:rgba(52,168,83,0.08);}
+.mech-3{border-color:var(--orange); background:rgba(232,113,10,0.08);}
+.mech-4{border-color:var(--purple); background:rgba(99,44,166,0.08);}
+.mech-note{font-size:11.5px; color:var(--text-faint); font-style:italic; margin:2px 0 18px;}
+.billing-note{
+  font-size:12px; background:#f5f0fa; border:1px solid var(--purple); border-radius:5px; padding:8px 12px; color:#3f2160;
+  margin-bottom:18px;
+}
+
+/* ---------- Section 4 operating read ---------- */
+.op-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:14px;}
+.op-item{border:1px solid var(--border); border-radius:5px; padding:10px 12px; background:var(--card-bg); font-size:12.5px;}
+.op-item .lbl{color:var(--text-muted); font-size:11px; text-transform:uppercase; letter-spacing:0.03em; margin-bottom:4px;}
+.op-summary{
+  font-size:13px; line-height:1.6; padding:14px 16px; background:#fbfbfb; border-left:3px solid var(--purple); border-radius:0 5px 5px 0;
+}
+.op-caveat{font-size:11.5px; color:var(--text-faint); font-style:italic; margin-top:10px;}
+
+/* ---------- forecast block (reuses .op-grid/.op-item/table.compact/details.method; minimal additions only) ---------- */
+.forecast-badge{display:inline-block; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em;
+  color:#8a5200; background:#fff3e0; border:1px solid #e8a13d; border-radius:4px; padding:2px 9px; margin-bottom:10px;}
+.forecast-value{font-size:22px; font-weight:700; margin:2px 0 2px;}
+.forecast-formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:11.5px; background:#f7f7f7;
+  border:1px solid var(--border); border-radius:4px; padding:8px 11px; margin:8px 0; white-space:pre-line;}
+tr.fc-selected-row{background:#eaf7ed;}
+.fwd-title{font-size:13.5px; font-weight:700; margin:22px 0 10px; padding-top:16px; border-top:1px solid var(--border);}
+.fwd-row{display:grid; grid-template-columns:190px 1fr; gap:4px 16px; padding:10px 14px; border:1px solid var(--border); border-radius:5px; margin-bottom:8px; background:#fff; font-size:12.5px; line-height:1.55;}
+.fwd-row .fwd-label{font-weight:700; color:var(--purple); font-size:12px;}
+@media (max-width:640px){ .fwd-row{grid-template-columns:1fr;} }
+
+/* ---------- Section 5 methodology accordions ---------- */
+details.method{border:1px solid var(--border); border-radius:6px; margin-bottom:9px; background:#fff;}
+details.method summary{
+  cursor:pointer; padding:11px 15px; font-weight:700; font-size:13.5px; list-style:none; display:flex;
+  justify-content:space-between; align-items:center;
+}
+details.method summary::-webkit-details-marker{display:none;}
+details.method summary:after{content:"+"; font-size:18px; color:var(--text-faint); font-weight:400;}
+details.method[open] summary:after{content:"\2212";}
+details.method .method-body{padding:0 16px 14px; font-size:12.5px;}
+.method-grid{display:grid; grid-template-columns:150px 1fr; gap:5px 12px; margin-bottom:8px;}
+.method-grid .k{color:var(--text-muted); font-weight:600;}
+.excluded-box{border:1px dashed #bbb; border-radius:6px; padding:12px 15px; margin-top:16px; background:#fbfbfb;}
+.excluded-box h4{margin:0 0 8px; font-size:13px;}
+.excluded-box ul{margin:0; padding-left:18px; font-size:12px; line-height:1.6;}
+
+footer.bottom{margin-top:44px; padding-top:16px; border-top:1px solid var(--border); font-size:11px; color:var(--text-faint); text-align:center;}
+
+@media (max-width:640px){
+  .wrap{padding:0 14px 40px;}
+  header.top h1{font-size:19px;}
+  .kpi-value{font-size:21px;}
+  .mech-row{flex-direction:column;}
+  .mech-arrow{transform:rotate(90deg); justify-content:center; padding:2px 0;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>Datadog Alternative-Data Monitor</h1>
+  <div class="sub">Operating dashboard&nbsp;&nbsp;|&nbsp;&nbsp;Data through 2026 Q2</div>
+</header>
+<div class="disclaimer">Operating-performance research tool &mdash; not a stock rating or investment recommendation.</div>
+
+<!-- ================= SECTION 1: KPI CARDS ================= -->
+<section id="sec1">
+  <h2><span class="n">1</span>Key Signal Readings</h2>
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<!-- ================= SECTION 2: INTERACTIVE CHARTS ================= -->
+<section id="sec2">
+  <h2><span class="n">2</span>Interactive Charts</h2>
+
+  <div class="chart-block">
+    <div class="chart-head">
+      <h4>Chart A &mdash; DDOG Revenue YoY and Cloud Workload Index</h4>
+      <div class="toggle-group" id="chartAToggle">
+        <button class="toggle-btn" data-mode="raw">Raw contemporaneous</button>
+        <button class="toggle-btn active" data-mode="aligned">Forecast alignment: Cloud t&minus;2 &rarr; Revenue t</button>
+      </div>
+    </div>
+    <div id="chartA" style="width:100%; height:380px;"></div>
+    <div class="chart-note" id="chartANote"></div>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-head">
+      <h4>Chart B &mdash; Datadog Google Trends YoY vs $100k+ Customer YoY</h4>
+      <div class="toggle-group" id="lagToggle">
+        <button class="toggle-btn" data-lag="0">Contemporaneous</button>
+        <button class="toggle-btn" data-lag="1">t&minus;1</button>
+        <button class="toggle-btn active" data-lag="2">t&minus;2</button>
+      </div>
+    </div>
+    <div id="chartB" style="width:100%; height:380px;"></div>
+    <div class="chart-note">Trend series is shifted for display only, using lags already examined in the underlying research (0 / t&minus;1 / t&minus;2) &mdash; no new lag is calculated here. Google Trends t&minus;2 is treated as a mechanism indicator, not a direct revenue forecast.</div>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-head">
+      <h4>Chart C &mdash; Expanding-Window OOS Model Comparison</h4>
+      <div class="toggle-group" id="metricToggle">
+        <button class="toggle-btn active" data-view="error">Point-forecast error</button>
+        <button class="toggle-btn" data-view="dir">Directional accuracy</button>
+      </div>
+    </div>
+    <div id="chartC"></div>
+    <div class="chart-highlight-note" id="chartCHighlight"><!-- populated dynamically from CHART_C at render time; see renderChartCHighlight() --></div>
+    <div class="chart-note">8-quarter expanding-window OOS evaluation (2024 Q3 &ndash; 2026 Q2); small sample &mdash; interpret cautiously.</div>
+  </div>
+
+  <div class="chart-block" id="forecastBlock">
+    <div class="chart-head"><h4>2026 Q3 Revenue Forecast</h4></div>
+    <div id="forecastContent"><!-- populated dynamically from FORECAST at render time; see renderForecast() --></div>
+  </div>
+</section>
+
+<!-- ================= SECTION 3: AGENT OBSERVABILITY ================= -->
+<section id="sec3">
+  <h2><span class="n">3</span>Agent Observability &mdash; Adoption &amp; Monetization Mechanism</h2>
+  <div class="mech-row">
+    <div class="mech-box mech-1">AI applications &amp; agents</div>
+    <div class="mech-arrow">&rarr;</div>
+    <div class="mech-box mech-2">Agent / LLM Observability adoption</div>
+    <div class="mech-arrow">&rarr;</div>
+    <div class="mech-box mech-3">LLM spans / usage</div>
+    <div class="mech-arrow">&rarr;</div>
+    <div class="mech-box mech-4">Potential billable LLM-observability volume</div>
+  </div>
+  <div class="billing-note">Only LLM spans are the billing unit; tool/retrieval/embedding/agent spans are not billed under the verified public pricing mechanics.</div>
+
+  <div class="chart-block">
+    <div class="chart-head"><h4>Verified Milestone Timeline &mdash; 2024 Q1 to 2026 Q2</h4></div>
+    <div id="timeline" style="width:100%; height:190px;"></div>
+    <div class="chart-note">
+      Hover any point for date, disclosure quarter, metric, value, source type and interpretation.
+      Color: <b style="color:#632CA6">purple = direct LLM/Agent Observability evidence</b>, <b style="color:#5c7a89">slate = adjacent AI-ecosystem evidence</b>.
+      Symbol: <b>&#9679; T1 primary</b>, <b>&#9670; T2 verbatim transcript</b>, <b>&#9650; T3 third-party summary</b>.
+    </div>
+    <details class="method" id="sourceAuditAccordion">
+      <summary>Source audit trail</summary>
+      <div class="method-body">
+        <div style="overflow-x:auto;">
+          <table class="compact audit-table">
+            <thead><tr><th>Date</th><th>Disclosure Quarter</th><th>Metric</th><th>Value</th><th>Source Tier</th><th>Source</th></tr></thead>
+            <tbody id="sourceAuditBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ================= SECTION 4: CURRENT OPERATING READ ================= -->
+<section id="sec4">
+  <h2><span class="n">4</span>Current Operating Read</h2>
+  <div class="op-grid" id="opGrid"></div>
+  <div class="op-summary" id="opSummary"></div>
+  <div class="op-caveat">Qualitative synthesis of independently monitored signals; no mechanical composite score.</div>
+
+  <h3 class="fwd-title">Forward Research Read</h3>
+  <div id="forwardRead"></div>
+  <div class="op-caveat">Research-oriented synthesis of the evidence already shown above. Not a forecast, price target, or BUY/SELL recommendation.</div>
+</section>
+
+<!-- ================= SECTION 5: METHODOLOGY / LIMITATIONS ================= -->
+<section id="sec5">
+  <h2><span class="n">5</span>Methodology &amp; Limitations</h2>
+  <div id="methodAccordions"></div>
+  <div class="excluded-box">
+    <h4>Signals screened but excluded</h4>
+    <ul id="excludedList"></ul>
+  </div>
+</section>
+
+<footer class="bottom">
+  Datadog Alternative-Data Monitor &mdash; generated from verified research CSVs only. No fabricated values. No stock-price target, BUY/SELL rating, or investment recommendation.
+</footer>
+
+</div>
+<script>
+const CHART_A = [{"q": "2022 Q1", "rev": 82.84, "cloud": 42.13}, {"q": "2022 Q2", "rev": 73.9, "cloud": 36.3}, {"q": "2022 Q3", "rev": 61.39, "cloud": 33.38}, {"q": "2022 Q4", "rev": 43.9, "cloud": 27.75}, {"q": "2023 Q1", "rev": 32.69, "cloud": 23.62}, {"q": "2023 Q2", "rev": 25.44, "cloud": 22.04}, {"q": "2023 Q3", "rev": 25.43, "cloud": 21.25}, {"q": "2023 Q4", "rev": 25.62, "cloud": 22.96}, {"q": "2024 Q1", "rev": 26.89, "cloud": 25.56}, {"q": "2024 Q2", "rev": 26.66, "cloud": 25.51}, {"q": "2024 Q3", "rev": 26.02, "cloud": 29.01}, {"q": "2024 Q4", "rev": 25.11, "cloud": 26.66}, {"q": "2025 Q1", "rev": 24.59, "cloud": 25.98}, {"q": "2025 Q2", "rev": 28.12, "cloud": 29.38}, {"q": "2025 Q3", "rev": 28.35, "cloud": 31.25}, {"q": "2025 Q4", "rev": 29.21, "cloud": 36.78}, {"q": "2026 Q1", "rev": 32.15, "cloud": 43.93}, {"q": "2026 Q2", "rev": 35.64, "cloud": 53.86}];
+const CHART_B = [{"q": "2022 Q1", "trend": 103.0, "cust": 60.03}, {"q": "2022 Q2", "trend": 208.57, "cust": 54.14}, {"q": "2022 Q3", "trend": 197.34, "cust": 44.44}, {"q": "2022 Q4", "trend": 163.64, "cust": 38.31}, {"q": "2023 Q1", "trend": 78.33, "cust": 29.33}, {"q": "2023 Q2", "trend": 7.72, "cust": 23.55}, {"q": "2023 Q3", "trend": 8.93, "cust": 20.38}, {"q": "2023 Q4", "trend": 4.7, "cust": 14.75}, {"q": "2024 Q1", "trend": 10.77, "cust": 14.78}, {"q": "2024 Q2", "trend": 17.77, "cust": 13.38}, {"q": "2024 Q3", "trend": 13.12, "cust": 11.5}, {"q": "2024 Q4", "trend": 18.26, "cust": 13.17}, {"q": "2025 Q1", "trend": 6.23, "cust": 12.87}, {"q": "2025 Q2", "trend": 7.06, "cust": 13.57}, {"q": "2025 Q3", "trend": 107.0, "cust": 16.33}, {"q": "2025 Q4", "trend": 83.04, "cust": 19.39}, {"q": "2026 Q1", "trend": 82.63, "cust": 20.69}, {"q": "2026 Q2", "trend": 105.45, "cust": 22.6}];
+const CHART_C = [{"model": "Naive", "mae": 1.64, "rmse": 2.11, "mape": 5.4, "dir_acc": 0.0}, {"model": "AR(1)", "mae": 2.48, "rmse": 3.14, "mape": 8.1, "dir_acc": 37.5}, {"model": "Cloud", "mae": 3.96, "rmse": 4.87, "mape": 13.9, "dir_acc": 50.0}, {"model": "Trends", "mae": 2.52, "rmse": 3.37, "mape": 8.6, "dir_acc": 62.5}, {"model": "Cloud+Trends", "mae": 5.57, "rmse": 6.8, "mape": 20.4, "dir_acc": 50.0}, {"model": "AR+Cloud+Trends", "mae": 3.08, "rmse": 4.19, "mape": 10.6, "dir_acc": 37.5}];
+const TIMELINE = [{"date": "2024-05-07", "y": -0.31, "quarter": "2024 Q1", "metric": "AI integrations customers ('next-gen AI')", "value": "~2,000", "tier": "T2", "tier_label": "Verbatim transcript, 3rd-party host", "source_url": "https://www.fool.com/earnings/call-transcripts/2024/05/07/datadog-ddog-q1-2024-earnings-call-transcript/", "interpretation": "Earliest quantitative AI disclosure in the window; used the pre-'AI-native' label", "kind": "Stock", "category": "Adjacent"}, {"date": "2024-05-07", "y": 0.31, "quarter": "2024 Q1", "metric": "AI-native ('next-gen') share of ARR", "value": "~3.5%", "tier": "T2", "tier_label": "Verbatim transcript, 3rd-party host", "source_url": "https://www.fool.com/earnings/call-transcripts/2024/05/07/datadog-ddog-q1-2024-earnings-call-transcript/", "interpretation": "Baseline", "kind": "Stock", "category": "Adjacent"}, {"date": "2024-06-26", "y": 0.0, "quarter": "2024 Q2", "metric": "LLM Observability", "value": "GA launch", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://www.datadoghq.com/about/latest-news/press-releases/datadog-llm-observability-is-now-generally-available-to-help-businesses-monitor-improve-and-secure-generative-ai-applications/", "interpretation": "Anchor date for the product's existence", "kind": "Event", "category": "Direct"}, {"date": "2024-08-08", "y": -0.31, "quarter": "2024 Q2", "metric": "AI integrations customers", "value": "~2,500", "tier": "T2", "tier_label": "Verbatim transcript, 3rd-party host", "source_url": "https://www.barchart.com/story/news/27920577/datadog-ddog-q2-2024-earnings-call-transcript", "interpretation": "+25% vs Q1'24", "kind": "Stock", "category": "Adjacent"}, {"date": "2024-08-08", "y": 0.31, "quarter": "2024 Q2", "metric": "AI-native share of ARR", "value": ">4%", "tier": "T2", "tier_label": "Verbatim transcript, 3rd-party host", "source_url": "https://www.barchart.com/story/news/27920577/datadog-ddog-q2-2024-earnings-call-transcript", "interpretation": "\u2014", "kind": "Stock", "category": "Adjacent"}, {"date": "2024-11-07", "y": 0.0, "quarter": "2024 Q3", "metric": "AI-native share of ARR", "value": ">6%", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/e3e6f71c-4207-4296-acd5-b994ab22fe81", "interpretation": "Growth contribution, not just share", "kind": "Stock+Flow", "category": "Adjacent"}, {"date": "2025-02-13", "y": -0.31, "quarter": "2024 Q4", "metric": "AI integrations customers", "value": ">3,500", "tier": "T3", "tier_label": "3rd-party summary (unverified from primary)", "source_url": "https://sergeycyw.substack.com/p/datadog-q4-2024-earnings-analysis", "interpretation": "Verbatim CEO quote embedded in a 3rd-party post; not re-confirmed on a T1 host this pass", "kind": "Stock", "category": "Adjacent"}, {"date": "2025-02-13", "y": 0.31, "quarter": "2024 Q4", "metric": "AI-native share of ARR", "value": "6%", "tier": "T3", "tier_label": "3rd-party summary (unverified from primary)", "source_url": "https://sergeycyw.substack.com/p/datadog-q4-2024-earnings-analysis", "interpretation": "Same caveat as above", "kind": "Stock+Flow", "category": "Adjacent"}, {"date": "2025-05-06", "y": -0.62, "quarter": "2025 Q1", "metric": "AI integrations customers", "value": ">4,000", "tier": "T2", "tier_label": "Verbatim transcript, 3rd-party host", "source_url": "https://news.alphastreet.com/datadog-inc-ddog-q1-2025-earnings-call-transcript/", "interpretation": "\u2014", "kind": "Stock", "category": "Adjacent"}, {"date": "2025-05-06", "y": 0.0, "quarter": "2025 Q1", "metric": "AI-native share of ARR", "value": "8.5%", "tier": "T2", "tier_label": "Verbatim transcript, 3rd-party host", "source_url": "https://news.alphastreet.com/datadog-inc-ddog-q1-2025-earnings-call-transcript/", "interpretation": "\u2014", "kind": "Stock+Flow", "category": "Adjacent"}, {"date": "2025-05-06", "y": 0.62, "quarter": "2025 Q1", "metric": "LLM Observability adopting-company growth", "value": "more than doubled", "tier": "T3", "tier_label": "3rd-party summary (unverified from primary)", "source_url": "https://sergeycyw.substack.com/p/datadog-q1-2025-earnings-analysis", "interpretation": "First disclosed LLM Obs adoption growth rate; company-count basis unstated", "kind": "Flow", "category": "Direct"}, {"date": "2025-06-10", "y": 0.0, "quarter": "2025 Q2", "metric": "AI Agent Monitoring / LLM Experiments / AI Agents Console", "value": "GA launch", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/news-releases/news-release-details/datadog-expands-llm-observability-new-capabilities-monitor", "interpretation": "Agentic-specific capabilities layered onto the LLM Obs base", "kind": "Event", "category": "Direct"}, {"date": "2025-08-07", "y": -0.31, "quarter": "2025 Q2", "metric": "AI-native share of Q2 revenue", "value": "~11%", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/4b5b9407-c0e8-4333-b035-ca5b894e8904", "interpretation": "\u2014", "kind": "Stock+Flow", "category": "Adjacent"}, {"date": "2025-08-07", "y": 0.31, "quarter": "2025 Q2", "metric": "AI integrations/tools customers", "value": ">4,500", "tier": "T3", "tier_label": "3rd-party summary (unverified from primary)", "source_url": "https://www.fool.com/investing/2025/08/15/1-magnificent-artificial-intelligence-ai-stock-to/", "interpretation": "NOT independently re-confirmed on the T1 transcript this pass - flagged", "kind": "Stock", "category": "Adjacent"}, {"date": "2025-11-06", "y": -1.24, "quarter": "2025 Q3", "metric": "Total Datadog integrations", "value": ">1,000", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/cfa98304-1a07-482b-8d4d-dd074aa050c8", "interpretation": "All integrations, not AI-specific; context only", "kind": "Stock", "category": "Adjacent"}, {"date": "2025-11-06", "y": -0.62, "quarter": "2025 Q3", "metric": "LLM span-sending customer growth", "value": "more than quadrupled", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/cfa98304-1a07-482b-8d4d-dd074aa050c8", "interpretation": "\u2014", "kind": "Flow", "category": "Direct"}, {"date": "2025-11-06", "y": 0.0, "quarter": "2025 Q3", "metric": "AI integrations customers", "value": ">5,000", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/cfa98304-1a07-482b-8d4d-dd074aa050c8", "interpretation": "\u2014", "kind": "Stock", "category": "Adjacent"}, {"date": "2025-11-06", "y": 0.62, "quarter": "2025 Q3", "metric": "AI-native share of revenue", "value": "12%", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/cfa98304-1a07-482b-8d4d-dd074aa050c8", "interpretation": "\u2014", "kind": "Stock", "category": "Adjacent"}, {"date": "2025-11-06", "y": 1.24, "quarter": "2025 Q3", "metric": "AI-native customer count", "value": ">500 companies (100 spend $100k+/yr, 15 spend $1M+/yr)", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/cfa98304-1a07-482b-8d4d-dd074aa050c8", "interpretation": "Directly fetched & confirmed on the IR-hosted transcript", "kind": "Stock", "category": "Adjacent"}, {"date": "2026-02-10", "y": -1.55, "quarter": "2025 Q4", "metric": "AI-native customer count", "value": "~650 (19 spend $1M+/yr; 14 of top 20 AI-native companies are customers)", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/71a1a6e1-3028-48a3-90f3-7662b76604e2", "interpretation": "Directly fetched & confirmed on the IR-hosted transcript", "kind": "Stock", "category": "Adjacent"}, {"date": "2026-02-10", "y": -0.93, "quarter": "2025 Q4", "metric": "AI-native share of revenue", "value": "NOT DISCLOSED", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/71a1a6e1-3028-48a3-90f3-7662b76604e2", "interpretation": "Disclosure discontinued from this quarter forward - itself a datapoint", "kind": "\u2014", "category": "Adjacent"}, {"date": "2026-02-10", "y": -0.31, "quarter": "2025 Q4", "metric": "LLM Observability customers / span growth", "value": ">1,000 customers; spans up 10x over 6 months", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/71a1a6e1-3028-48a3-90f3-7662b76604e2", "interpretation": "First disclosed absolute LLM Obs customer count", "kind": "Stock+Flow", "category": "Direct"}, {"date": "2026-02-10", "y": 0.31, "quarter": "2025 Q4", "metric": "MCP Server usage", "value": "used by thousands of customers in preview; tool calls grew 11x QoQ (Q4 vs Q3)", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/71a1a6e1-3028-48a3-90f3-7662b76604e2", "interpretation": "MCP still in preview at this point (GA was 2026-03-09)", "kind": "Stock+Flow", "category": "Adjacent"}, {"date": "2026-02-10", "y": 0.93, "quarter": "2025 Q4", "metric": "AI integrations customers", "value": "~5,500", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/71a1a6e1-3028-48a3-90f3-7662b76604e2", "interpretation": "\u2014", "kind": "Stock", "category": "Adjacent"}, {"date": "2026-02-10", "y": 1.55, "quarter": "2025 Q4", "metric": "Bits AI SRE Agent usage", "value": "2,000+ trial/paying customers ran investigations in the past month", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/71a1a6e1-3028-48a3-90f3-7662b76604e2", "interpretation": "Adjacent AI-for-Datadog product, not LLM Observability itself; context", "kind": "Flow", "category": "Adjacent"}, {"date": "2026-03-09", "y": 0.0, "quarter": "2026 Q1", "metric": "Datadog MCP Server", "value": "GA launch", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/news-releases/news-release-details/datadog-launches-mcp-server-provide-ai-agents-secure-real-time", "interpretation": "Usage/preview activity predates this GA date (see Q4'25 row)", "kind": "Event", "category": "Adjacent"}, {"date": "2026-05-07", "y": -0.62, "quarter": "2026 Q1", "metric": "LLM Observability span growth", "value": "nearly tripled QoQ", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/b162f4b4-ae66-4fd2-bc41-92b4f9a877c9", "interpretation": "\u2014", "kind": "Flow", "category": "Direct"}, {"date": "2026-05-07", "y": 0.0, "quarter": "2026 Q1", "metric": "MCP Server tool-call growth", "value": "quadrupled QoQ", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/b162f4b4-ae66-4fd2-bc41-92b4f9a877c9", "interpretation": "\u2014", "kind": "Flow", "category": "Adjacent"}, {"date": "2026-05-07", "y": 0.62, "quarter": "2026 Q1", "metric": "AI integrations customers", "value": ">6,500 (20% of customers, 80% of ARR)", "tier": "T2", "tier_label": "Verbatim transcript, 3rd-party host", "source_url": "https://www.theglobeandmail.com/investing/markets/stocks/DDOG/pressreleases/1815156/datadog-q1-earnings-call-highlights/", "interpretation": "Direct-quote wire article; AI-native %-of-revenue not disclosed this quarter", "kind": "Stock", "category": "Adjacent"}, {"date": "2026-08-06", "y": -0.31, "quarter": "2026 Q2", "metric": "AI-native customer count", "value": ">750 ('AI customers'); all top-10 AI leaders are customers", "tier": "T2", "tier_label": "Verbatim transcript, 3rd-party host", "source_url": "https://www.investing.com/news/transcripts/earnings-call-transcript-datadog-beats-q2-2026-estimates-but-shares-fall-156-93CH-4842560", "interpretation": "Direct-quote article; AI-native %-of-revenue still not disclosed", "kind": "Stock", "category": "Adjacent"}, {"date": "2026-08-06", "y": 0.31, "quarter": "2026 Q2", "metric": "MCP tool-call growth", "value": "quadrupled QoQ again; >22x vs Q4'25", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://investors.datadoghq.com/static-files/2360a5cc-f17a-4731-b74a-fb6f4617baf5", "interpretation": "\u2014", "kind": "Flow", "category": "Adjacent"}, {"date": "2026-09-15", "y": 0.0, "quarter": "Sep 2026 (docs snapshot)", "metric": "Product naming", "value": "Docs navigation now reads 'Agent Observability' throughout (breadcrumbs, SDK name, page titles); URL path still /llm_observability/; blog posts still titled 'LLM Observability'; Japanese-locale docs still say 'LLM Observability'", "tier": "T1", "tier_label": "Primary (Datadog IR / filing / docs)", "source_url": "https://docs.datadoghq.com/llm_observability/", "interpretation": "Rename APPEARS in progress on English docs; NO exact rebrand date could be established - stated as such rather than inferred", "kind": "Event", "category": "Direct"}];
+const KPI = {"revenue": {"latest": 35.64, "prior": 32.15, "state": "Accelerating"}, "cloud": {"latest": 53.863333, "p1": 43.93, "p2": 36.783333, "state": "Accelerating"}, "trend": {"latest": 105.455, "p1": 82.629, "p2": 83.038, "state": "Volatile / mixed"}, "cust": {"latest": 22.6, "p1": 20.69, "p2": 19.39, "state": "Accelerating"}, "agent": [{"category": "Direct", "quarter": "Q4 2025", "metric": "LLM Observability customers", "value": ">1,000 customers using the product"}, {"category": "Direct", "quarter": "Q1 2026", "metric": "LLM Observability span growth", "value": "Nearly tripled quarter-over-quarter"}, {"category": "Adjacent", "quarter": "Q2 2026", "metric": "MCP Server tool-call growth", "value": "Quadrupled QoQ again; >22x vs Q4 2025"}, {"category": "Adjacent", "quarter": "Q2 2026", "metric": "AI-native customer count", "value": ">750; all top-10 AI industry leaders are customers"}]};
+const OP_READ = {"modules": [{"name": "Revenue baseline", "state": "Accelerating"}, {"name": "Cloud workload", "state": "Accelerating"}, {"name": "Commercial interest", "state": "Volatile / mixed"}, {"name": "Large-customer expansion", "state": "Accelerating"}, {"name": "Agent Observability", "state": "Strong adoption/usage momentum"}], "summary": "As of 2026 Q2, DDOG revenue growth is accelerating for a third consecutive quarter (29.2% &rarr; 32.1% &rarr; 35.6% YoY), alongside accelerating cloud workload growth (36.8 &rarr; 43.9 &rarr; 53.9) and accelerating $100k+ customer growth (19.4% &rarr; 20.7% &rarr; 22.6% YoY). Google search interest remains volatile / mixed (83.0% &rarr; 82.6% &rarr; 105.5% YoY), reversing direction between the last two quarters rather than trending cleanly. Direct LLM/Agent Observability usage indicators continue to show strong adoption momentum, while adjacent AI-ecosystem indicators such as MCP usage and AI-native customer growth provide additional demand context. These signals should not be interpreted as equivalent measures of Agent Observability revenue, and none of them has been sized in dollars or incorporated into the quantitative revenue model."};
+const FORECAST = {"selected": {"model": "Trends", "forecast_quarter": "2026 Q3", "as_of_quarter": "2026 Q2", "data_cutoff": "2026 Q2", "predicted_revenue_yoy_pct": 35.67, "predicted_revenue_usd_m": 1201.58, "prior_year_revenue_usd_m": 885.651, "prior_year_revenue_source": "ddog_calculated_dataset.csv:Revenue_USDm (2025 Q3, USD millions; verify source units)", "historical_oos_mae_pp": 2.52, "historical_oos_directional_accuracy_pct": 62.5, "historical_oos_directional_hits": 5, "historical_oos_n": 8, "feature_lags": "RevenueYoY t-1; Cloud t-2; Trends t-1", "trends_lag_source_quarter": "2026 Q2", "selection_method": "highest main-panel OOS directional accuracy; MAE tie-break (exploratory, not nested)", "note": "Scenario/model estimate; selected on acceleration/deceleration accuracy, not revenue-amount error; 8 main OOS quarters; no calibrated prediction interval"}, "all_models": [{"model": "Naive", "predicted_revenue_yoy_pct": 35.64, "predicted_revenue_usd_m": 1201.3, "historical_oos_mae_pp": 1.64, "historical_oos_directional_accuracy_pct": 0.0, "selected": false}, {"model": "AR1", "predicted_revenue_yoy_pct": 32.44, "predicted_revenue_usd_m": 1172.91, "historical_oos_mae_pp": 2.48, "historical_oos_directional_accuracy_pct": 37.5, "selected": false}, {"model": "Cloud", "predicted_revenue_yoy_pct": 52.1, "predicted_revenue_usd_m": 1347.05, "historical_oos_mae_pp": 3.96, "historical_oos_directional_accuracy_pct": 50.0, "selected": false}, {"model": "Trends", "predicted_revenue_yoy_pct": 35.67, "predicted_revenue_usd_m": 1201.58, "historical_oos_mae_pp": 2.52, "historical_oos_directional_accuracy_pct": 62.5, "selected": true}, {"model": "Cloud+Trends", "predicted_revenue_yoy_pct": 47.13, "predicted_revenue_usd_m": 1303.07, "historical_oos_mae_pp": 5.57, "historical_oos_directional_accuracy_pct": 50.0, "selected": false}, {"model": "AR+Cloud+Trends", "predicted_revenue_yoy_pct": 41.0, "predicted_revenue_usd_m": 1248.74, "historical_oos_mae_pp": 3.08, "historical_oos_directional_accuracy_pct": 37.5, "selected": false}]};
+const FORWARD_READ = [{"label": "Observed operating signals", "text": "Revenue growth, cloud workload growth and $100k+ customer growth are all currently accelerating (three consecutive quarters each, as of 2026 Q2). Google Trends search interest remains volatile/mixed rather than trending cleanly in either direction."}, {"label": "Model evidence", "text": "In the 8-quarter expanding-window OOS test, Naive records the lowest point-forecast MAE (1.64), while Trends records the highest directional accuracy (62.5%). These are separate evaluation criteria, not an overall model ranking. Naive persistence predicts no change in the growth rate each quarter, so under this sign-based test it cannot register a directional call; its 0% reflects that mechanical property, not a track record of missed forecasts. Given the eight-quarter OOS sample, this evidence should be treated as indicative rather than conclusive."}, {"label": "Agent/AI catalyst evidence", "text": "Direct Agent/LLM Observability adoption indicators (customer count, span growth) have shown consistently strong growth across disclosures, though the metrics and time windows are not directly comparable quarter to quarter. Adjacent AI-ecosystem metrics (MCP tool-call growth, AI-native customer growth) provide additional, corroborating demand context, but are not direct measures of the same product."}, {"label": "What is not yet proven", "text": "No defensible standalone dollar revenue contribution from Agent Observability has been established from public disclosures &mdash; the billing unit and free/Pro tiers are known, but the overage rate is not published and no absolute revenue figure has ever been disclosed. Agent Observability remains a separately monitored catalyst and must not be mechanically added to the revenue forecast."}];
+const METHOD = [{"name": "Cloud Index", "frequency": "Quarterly", "history": "2022 Q1 &ndash; 2026 Q2 (18 quarters)", "lag": "t&minus;2 in the revenue forecasting model", "rationale": "Datadog usage scales with customer cloud/compute consumption; hyperscaler YoY growth is a public, high-frequency proxy for that underlying workload growth.", "limitation": "Hyperscaler revenue mixes many workloads unrelated to observability spend; correlation, not demonstrated causality; in-sample relationship only partially confirmed out-of-sample.", "used": "Yes &mdash; Cloud, Cloud+Trends and AR+Cloud+Trends specifications"}, {"name": "Google Trends", "frequency": "Monthly, aggregated to quarterly", "history": "2021 Q1 &ndash; 2026 Q2 collected; YoY computable from 2022 Q1 (needs a prior-year base)", "lag": "t&minus;1 in the revenue forecasting model; t&minus;2 in the separate customer-growth mechanism check", "rationale": "Search interest for &quot;Datadog&quot; as a proxy for market/commercial evaluation activity that may precede adoption.", "limitation": "Search intent is unobserved &mdash; may reflect investor, job-seeker or news attention rather than practitioner evaluation; the index is rescaled to its own sample-period peak, so a single spike (2025 Q3) can distort long-window comparisons.", "used": "Yes &mdash; Trends, Cloud+Trends and AR+Cloud+Trends specifications"}, {"name": "Integration Ecosystem", "frequency": "Point-in-time snapshots reconstructed at each calendar quarter-end from git history", "history": "2021 Q1 &ndash; 2026 Q2 analysis window (underlying repo history extends back to 2015)", "lag": "Tested at t, t&minus;1 and t&minus;2 against both revenue and customer growth", "rationale": "A broader integration catalog implies broader product surface area &mdash; a potential cross-sell/expansion signal.", "limitation": "Weak and sign-inconsistent correlation with DDOG revenue/customer growth in testing.", "used": "No &mdash; screened and not retained as a predictor; kept as contextual/cross-sell background only"}, {"name": "Walk-forward Validation", "frequency": "Quarterly, expanding window", "history": "8 out-of-sample quarters (2024 Q3 &ndash; 2026 Q2); minimum training window = 8 quarters", "lag": "n/a &mdash; this is the evaluation methodology, not a signal", "rationale": "Tests whether Cloud/Trends actually improve forecast accuracy out-of-sample, rather than relying on in-sample correlation alone.", "limitation": "Only 8 OOS observations &mdash; too few for formal statistical significance testing; results are indicative, not conclusive.", "used": "This IS the revenue model's validation framework (Chart C)"}, {"name": "Agent Observability", "frequency": "Irregular &mdash; as disclosed on quarterly earnings calls, no fixed cadence per metric", "history": "2024 Q1 &ndash; 2026 Q2 (LLM Observability launched June 2024, mid-window)", "lag": "n/a &mdash; not incorporated into any quantitative forecasting model", "rationale": "Represents a potential new/incremental usage-and-monetization curve distinct from the historical cloud-workload and search-interest signals.", "limitation": "No absolute dollar figure ever disclosed; the AI-native %-of-revenue metric was discontinued after Q3 2025; short and inconsistent disclosure history.", "used": "No &mdash; adoption-stage catalyst, tracked separately (Section 3), not sized or incorporated into any revenue model"}];
+const EXCLUDED = [{"name": "Package downloads (npm / PyPI)", "reason": "Network access to the npm, PyPI and ClickHouse endpoints needed for a historical download series was blocked in the research environment; no verified time series was ever obtained."}, {"name": "External GitHub historical adoption", "reason": "GitHub's search API cannot reconstruct a historical time series &mdash; commit search matches commit messages only (not file content), and code search requires authentication; confirmed infeasible for a multi-quarter series."}, {"name": "BuiltWith", "reason": "The technology-adoption list/lookup API requires a paid subscription; no free path to the underlying domain-level data was found."}, {"name": "Docker Hub", "reason": "The public repository API exposes only a single current cumulative pull count, with no historical or time-series endpoint."}];
+
+const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
+
+function statePillClass(state){
+  const s = state.toLowerCase();
+  if(s.includes('accelerat')) return 'state-accelerating';
+  if(s.includes('decelerat')) return 'state-decelerating';
+  if(s.includes('volatile') || s.includes('mixed')) return 'state-volatile';
+  if(s.includes('strong')) return 'state-strong';
+  return 'state-stable';
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ===================================================== SECTION 1: KPI CARDS ===================================================== */
+function renderKPI(){
+  const grid = document.getElementById('kpiGrid');
+  const cards = [];
+
+  cards.push(`<div class="kpi-card">
+      <h3>Revenue Growth</h3>
+      <div class="kpi-value">${KPI.revenue.latest.toFixed(1)}%</div>
+      <div class="kpi-prior">Prior quarter: ${KPI.revenue.prior.toFixed(1)}%</div>
+      <span class="state-pill ${statePillClass(KPI.revenue.state)}">${KPI.revenue.state}</span>
+      <div class="method">This is the latest reported actual value, not a model forecast; see Chart C for the verified out-of-sample comparison across all six models.</div>
+    </div>`);
+
+  cards.push(`<div class="kpi-card">
+      <h3>Cloud Workload <span class="tooltip-icon" tabindex="0">i</span></h3>
+      <div class="tooltip-box">Equal-weight AWS, Azure and Google Cloud YoY growth; historical relationship evaluated at t&minus;2.</div>
+      <div class="kpi-value">${KPI.cloud.latest.toFixed(1)}%</div>
+      <div class="kpi-prior">Prior 2 quarters: ${KPI.cloud.p2.toFixed(1)}% &rarr; ${KPI.cloud.p1.toFixed(1)}%</div>
+      <span class="state-pill ${statePillClass(KPI.cloud.state)}">${KPI.cloud.state}</span>
+    </div>`);
+
+  cards.push(`<div class="kpi-card">
+      <h3>Commercial Interest <span class="tooltip-icon" tabindex="0">i</span></h3>
+      <div class="tooltip-box">Worldwide Google search term &quot;Datadog&quot;; search intent is unobserved.</div>
+      <div class="kpi-value">${KPI.trend.latest.toFixed(1)}%</div>
+      <div class="kpi-prior">Prior 2 quarters: ${KPI.trend.p2.toFixed(1)}% &rarr; ${KPI.trend.p1.toFixed(1)}%</div>
+      <span class="state-pill ${statePillClass(KPI.trend.state)}">${KPI.trend.state}</span>
+    </div>`);
+
+  cards.push(`<div class="kpi-card">
+      <h3>Large-Customer Expansion <span class="tooltip-icon" tabindex="0">i</span></h3>
+      <div class="tooltip-box">YoY growth in customers generating $100k+ ARR. Used as a commercial-expansion indicator; company-disclosed customer counts may be rounded.</div>
+      <div class="kpi-value">${KPI.cust.latest.toFixed(1)}%</div>
+      <div class="kpi-prior">Prior 2 quarters: ${KPI.cust.p2.toFixed(1)}% &rarr; ${KPI.cust.p1.toFixed(1)}%</div>
+      <span class="state-pill ${statePillClass(KPI.cust.state)}">${KPI.cust.state}</span>
+      <div class="method">Google Trends t&minus;2 is evaluated separately as a mechanism indicator for this series; it is not a direct revenue forecast.</div>
+    </div>`);
+
+  const directRows = KPI.agent.filter(k=>k.category==='Direct').map(k =>
+    `<div class="agent-kpi-row"><span class="aq">${esc(k.quarter)}</span><br><span class="am">${esc(k.metric)}:</span> <span class="av">${esc(k.value)}</span></div>`
+  ).join('');
+  const adjacentRows = KPI.agent.filter(k=>k.category==='Adjacent').map(k =>
+    `<div class="agent-kpi-row"><span class="aq">${esc(k.quarter)}</span><br><span class="am">${esc(k.metric)}:</span> <span class="av">${esc(k.value)}</span></div>`
+  ).join('');
+  cards.push(`<div class="kpi-card">
+      <h3>Agent Observability</h3>
+      <span class="state-pill state-strong">Strong adoption / usage momentum</span>
+      <div class="agent-group-label agent-group-direct">Direct LLM/Agent Observability evidence</div>
+      ${directRows}
+      <div class="agent-group-label agent-group-adjacent">Adjacent AI-ecosystem evidence (context only)</div>
+      ${adjacentRows}
+    </div>`);
+
+  grid.innerHTML = cards.join('');
+}
+
+/* ===================================================== CHART A (raw contemporaneous vs t-2 forecast alignment toggle) ===================================================== */
+function renderChartA(mode){
+  const qs = CHART_A.map(d=>d.q), rev = CHART_A.map(d=>d.rev), cl = CHART_A.map(d=>d.cloud);
+  let xs, revShown, cloudShown, cloudName;
+  if(mode === 'aligned'){
+    /* Display transformation ONLY: pairs Revenue_YoY(t) with the ALREADY-VERIFIED Cloud_Index_Raw(t-2)
+       observation, matching exactly the specification used in the forecasting model (Chart C / Exhibit 2).
+       No new lag, correlation or regression is computed here - this just re-indexes existing values. */
+    xs = []; revShown = []; cloudShown = [];
+    for(let i = 2; i < qs.length; i++){ xs.push(qs[i]); revShown.push(rev[i]); cloudShown.push(cl[i - 2]); }
+    cloudName = 'Cloud Index (t-2, aligned to Revenue t)';
+  } else {
+    xs = qs; revShown = rev; cloudShown = cl;
+    cloudName = 'Cloud_Index_Raw (t, contemporaneous)';
+  }
+  document.getElementById('chartANote').innerHTML = mode === 'aligned'
+    ? 'Forecast-alignment view (default): each point pairs DDOG Revenue YoY at quarter t with Cloud_Index_Raw observed two quarters earlier (t&minus;2) &mdash; the exact specification already validated in the forecasting model (see Chart C and Section 5). Display transformation only; no new lag, correlation or model is calculated here.'
+    : 'Raw contemporaneous view: both series plotted at the same calendar quarter t, as originally reported. The forecasting model does not use this pairing directly &mdash; switch to &quot;Forecast alignment&quot; to see the t&minus;2 relationship the model actually evaluates.';
+  const traces = [
+    {x:xs, y:revShown, name:'DDOG Revenue YoY (%)', mode:'lines+markers', line:{color:'#632CA6', width:2.4}, marker:{size:6},
+     hovertemplate:'%{x}<br>Revenue YoY: %{y:.1f}%<extra></extra>'},
+    {x:xs, y:cloudShown, name:cloudName, mode:'lines+markers', line:{color:'#1a73e8', width:2.2, dash:'dot'}, marker:{size:5},
+     hovertemplate:'%{x}<br>' + cloudName + ': %{y:.1f}%<extra></extra>'}
+  ];
+  const layout = {margin:{t:8,r:18,l:46,b:64}, height:380, xaxis:{tickangle:-45, tickfont:{size:10}},
+    yaxis:{title:'YoY growth (%)', gridcolor:'#eee', zeroline:false}, legend:{orientation:'h', y:1.14, font:{size:11}},
+    hovermode:'x unified', plot_bgcolor:'#fff', paper_bgcolor:'#fff', font:{family:FONT, size:11.5}};
+  Plotly.newPlot('chartA', traces, layout, {displayModeBar:false, responsive:true});
+}
+
+/* ===================================================== CHART B (lag toggle) ===================================================== */
+function renderChartB(lag){
+  const qs = CHART_B.map(d=>d.q), trendArr = CHART_B.map(d=>d.trend), custArr = CHART_B.map(d=>d.cust);
+  const xs=[], shiftedTrend=[], custShown=[];
+  for(let i=lag;i<qs.length;i++){ xs.push(qs[i]); shiftedTrend.push(trendArr[i-lag]); custShown.push(custArr[i]); }
+  const trendName = lag===0 ? 'Google Trend_YoY (t)' : `Google Trend_YoY (t-${lag})`;
+  const traces = [
+    {x:xs, y:shiftedTrend, name:trendName, mode:'lines+markers', line:{color:'#E8710A', width:2.2}, marker:{size:6},
+     hovertemplate:'%{x}<br>'+trendName+': %{y:.1f}%<extra></extra>'},
+    {x:xs, y:custShown, name:'$100k+ Customer YoY (t)', mode:'lines+markers', line:{color:'#34a853', width:2.2}, marker:{size:6},
+     hovertemplate:'%{x}<br>Customer YoY: %{y:.1f}%<extra></extra>'}
+  ];
+  const layout = {margin:{t:8,r:18,l:46,b:64}, height:380, xaxis:{tickangle:-45, tickfont:{size:10}},
+    yaxis:{title:'YoY growth (%)', gridcolor:'#eee', zeroline:false}, legend:{orientation:'h', y:1.14, font:{size:11}},
+    hovermode:'x unified', plot_bgcolor:'#fff', paper_bgcolor:'#fff', font:{family:FONT, size:11.5}};
+  Plotly.newPlot('chartB', traces, layout, {displayModeBar:false, responsive:true});
+}
+
+/* ===================================================== CHART C (compact table, sort/column toggle) ===================================================== */
+/* Lowest-MAE and highest-directional-accuracy models are computed HERE, at render time, from whatever is in
+   CHART_C - no model name is hardcoded. If a future data refresh changes the winner of either metric, this
+   function needs no edit. */
+function lowestMaeModel(){ return CHART_C.reduce((a, b) => b.mae < a.mae ? b : a); }
+function highestDirModel(){ return CHART_C.reduce((a, b) => b.dir_acc > a.dir_acc ? b : a); }
+
+function renderChartC(view){
+  const rows = CHART_C.slice();
+  const lm = lowestMaeModel(), hd = highestDirModel();
+  if(view==='dir') rows.sort((a,b)=>b.dir_acc-a.dir_acc); else rows.sort((a,b)=>a.mae-b.mae);
+  const head = view==='dir'
+    ? '<th>Model</th><th>Directional&nbsp;Accuracy</th><th>MAE</th><th>RMSE</th><th>MAPE</th>'
+    : '<th>Model</th><th>MAE</th><th>RMSE</th><th>MAPE</th><th>Directional&nbsp;Accuracy</th>';
+  const body = rows.map(r=>{
+    const isLowestMae = r.model === lm.model, isHighestDir = r.model === hd.model;
+    const err = `<td class="${isLowestMae?'hl-orange':''}">${r.mae.toFixed(2)}</td><td class="${isLowestMae?'hl-orange':''}">${r.rmse.toFixed(2)}</td><td class="${isLowestMae?'hl-orange':''}">${r.mape.toFixed(1)}%</td>`;
+    const dir = `<td class="${isHighestDir?'hl-green':''}">${r.dir_acc.toFixed(1)}%</td>`;
+    return `<tr><td>${esc(r.model)}</td>${view==='dir' ? dir+err : err+dir}</tr>`;
+  }).join('');
+  document.getElementById('chartC').innerHTML = `<table class="compact"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+}
+
+/* Chart C's explanatory caption - fully dynamic, generated from CHART_C, never a hardcoded model name/number.
+   Handles the case where the same model wins both metrics (per the audit brief: "the code should still work"). */
+function renderChartCHighlight(){
+  const lm = lowestMaeModel(), hd = highestDirModel();
+  const naive = CHART_C.find(r => r.model === 'Naive');   // Naive is always one of the six fixed models; looking
+  const naiveNote = (naive && naive.dir_acc === 0)         // up its own row to explain ITS OWN mechanism is not
+    ? ' Naive persistence predicts no change in the growth rate each quarter, so under this sign-based test it '  // an assumption that it wins anything
+      + 'cannot register a directional call; its 0% reflects that mechanical property, not a track record of missed forecasts.'
+    : '';
+  let html;
+  if(lm.model === hd.model){
+    html = `<b class="orange">${esc(lm.model)}</b> has both the lowest point-forecast error (MAE ${lm.mae.toFixed(2)}) `
+         + `and the highest directional accuracy (${hd.dir_acc.toFixed(1)}%) among the six models tested. `
+         + `These remain two separate evaluation criteria that happen to align on the same model here, not evidence `
+         + `that it is an overall &ldquo;best&rdquo; model in every sense.${naiveNote}`;
+  } else {
+    html = `<b class="orange">${esc(lm.model)}</b> has the lowest point-forecast error among the six models tested `
+         + `(MAE ${lm.mae.toFixed(2)}). &nbsp;&nbsp;<b class="green">${esc(hd.model)}</b> has the highest directional `
+         + `accuracy (${hd.dir_acc.toFixed(1)}%). These are separate evaluation criteria, not an overall model `
+         + `ranking.${naiveNote}`;
+  }
+  document.getElementById('chartCHighlight').innerHTML = html;
+}
+
+/* ===================================================== TIMELINE (color = Direct/Adjacent evidence, symbol = source tier T1/T2/T3) ===================================================== */
+const TIER_SYMBOL = {T1:'circle', T2:'diamond', T3:'triangle-up'};
+const CATEGORY_COLOR = {Direct:'#632CA6', Adjacent:'#5c7a89'};
+function renderTimeline(){
+  const groups = {};
+  TIMELINE.forEach(d=>{ const k = d.category+'|'+d.tier; (groups[k] = groups[k] || []).push(d); });
+  const traces = Object.keys(groups).map(k=>{
+    const arr = groups[k]; const [cat, tier] = k.split('|');
+    return {
+      x: arr.map(d=>d.date), y: arr.map(d=>d.y), mode:'markers', showlegend:false,
+      marker:{size:12, color:CATEGORY_COLOR[cat], symbol:TIER_SYMBOL[tier], line:{color:'#fff', width:1.2}},
+      customdata: arr.map(d=>[d.quarter, d.metric, d.value, d.tier_label, d.interpretation, d.category]),
+      hovertemplate:'<b>%{customdata[1]}</b> <i>(%{customdata[5]})</i><br>Quarter: %{customdata[0]}<br>Value: %{customdata[2]}<br>Source: %{customdata[3]}<br>%{customdata[4]}<extra></extra>'
+    };
+  });
+  const layout = {
+    margin:{t:6,r:16,l:16,b:34}, height:190, xaxis:{type:'date', tickformat:'%b %Y', gridcolor:'#eee', range:['2023-11-01','2026-09-30']},
+    yaxis:{visible:false, range:[-2.2,2.2], fixedrange:true}, showlegend:false, plot_bgcolor:'#fff', paper_bgcolor:'#fff',
+    font:{family:FONT, size:11}, hoverlabel:{align:'left', font:{size:11.5}}
+  };
+  Plotly.newPlot('timeline', traces, layout, {displayModeBar:false, responsive:true});
+}
+
+/* ===================================================== SOURCE AUDIT TRAIL ===================================================== */
+function renderSourceAudit(){
+  const rows = TIMELINE.slice().sort((a,b)=> a.date < b.date ? -1 : a.date > b.date ? 1 : 0).map(d=>{
+    const tierClass = 'tier-' + d.tier.toLowerCase();
+    return `<tr>
+      <td>${esc(d.date)}</td>
+      <td>${esc(d.quarter)}</td>
+      <td>${esc(d.metric)} <span class="cat-tag cat-${d.category.toLowerCase()}">${esc(d.category)}</span></td>
+      <td>${esc(d.value)}</td>
+      <td><span class="tier-pill ${tierClass}">${esc(d.tier)}</span></td>
+      <td><a href="${esc(d.source_url)}" target="_blank" rel="noopener noreferrer">Open source &rarr;</a></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('sourceAuditBody').innerHTML = rows;
+}
+
+/* ===================================================== SECTION 4 ===================================================== */
+/* ===================================================== 2026 Q3 FORECAST (Section 2, after Chart C) =====================================================
+   Everything here reads from FORECAST (built in Python from outputs/next_quarter_forecast.csv). No model name or
+   number is hardcoded - the selected model is whichever row next_quarter_forecast.csv marks selected_for_dashboard.
+   This is a NEW forward-looking forecast, distinct from the historical OOS backtest shown in Chart C above it. */
+function renderForecast(){
+  const s = FORECAST.selected;
+  const facts = [
+    ["Forecast quarter", s.forecast_quarter],
+    ["Selected model", s.model],
+    ["Predicted Revenue YoY", `${s.predicted_revenue_yoy_pct.toFixed(2)}%`],
+    ["Predicted Revenue", `$${s.predicted_revenue_usd_m.toFixed(1)}M`],
+    ["Prior-year actual Revenue (2025 Q3)", `$${s.prior_year_revenue_usd_m.toFixed(1)}M`],
+    ["Data cutoff", s.data_cutoff],
+  ];
+  const factsHtml = facts.map(([lbl, val]) =>
+    `<div class="op-item"><div class="lbl">${esc(lbl)}</div><div class="forecast-value">${esc(val)}</div></div>`
+  ).join('');
+
+  const formula = `Forecast Revenue (${s.forecast_quarter}) = Actual Revenue (2025 Q3) &times; (1 + Forecast Revenue YoY / 100)\n`
+    + `= $${s.prior_year_revenue_usd_m.toFixed(3)}M &times; (1 + ${s.predicted_revenue_yoy_pct.toFixed(2)}% / 100) = $${s.predicted_revenue_usd_m.toFixed(2)}M`;
+
+  const hitsText = (s.historical_oos_directional_hits != null && s.historical_oos_n != null)
+    ? `${s.historical_oos_directional_hits} of ${s.historical_oos_n} OOS quarters` : `${s.historical_oos_directional_accuracy_pct.toFixed(1)}%`;
+
+  const rows = FORECAST.all_models.slice().sort((a, b) => b.predicted_revenue_yoy_pct - a.predicted_revenue_yoy_pct).map(m => `
+    <tr class="${m.selected ? 'fc-selected-row' : ''}">
+      <td>${esc(m.model)}${m.selected ? ' <span class="cat-tag cat-direct">selected</span>' : ''}</td>
+      <td>${m.predicted_revenue_yoy_pct.toFixed(2)}%</td>
+      <td>$${m.predicted_revenue_usd_m.toFixed(1)}M</td>
+      <td>${m.historical_oos_mae_pp.toFixed(2)}</td>
+      <td>${m.historical_oos_directional_accuracy_pct.toFixed(1)}%</td>
+    </tr>`).join('');
+
+  document.getElementById('forecastContent').innerHTML = `
+    <span class="forecast-badge">Forward-looking forecast &mdash; not a historical backtest result</span>
+    <div class="op-grid">${factsHtml}</div>
+    <div class="chart-highlight-note">
+      The <b class="green">${esc(s.model)}</b> model was selected for its historical out-of-sample <b>directional accuracy</b>
+      for quarterly Revenue YoY acceleration/deceleration &mdash; ${hitsText} (${s.historical_oos_directional_accuracy_pct.toFixed(1)}%).
+      This is <u>not</u> a measure of revenue-dollar forecast accuracy. That is reported separately: historical OOS YoY MAE for
+      this model is <b>${s.historical_oos_mae_pp.toFixed(2)} percentage points</b> (of Revenue YoY, not dollars).
+    </div>
+    <div class="forecast-formula">${formula}</div>
+    <div class="chart-note">Feature timing: Trend_YoY(t&minus;1), using ${esc(s.trends_lag_source_quarter)} Google Trends data (feature lags: ${esc(s.feature_lags)}).
+      Selection method: ${esc(s.selection_method)}.</div>
+    <details class="method">
+      <summary>All six models' 2026 Q3 forward predictions</summary>
+      <div class="method-body">
+        <div style="overflow-x:auto;">
+          <table class="compact audit-table">
+            <thead><tr><th>Model</th><th>Predicted Revenue YoY</th><th>Predicted Revenue</th><th>Historical OOS MAE (pp)</th><th>Historical OOS Directional Accuracy</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+    <div class="op-caveat">
+      Historical actual Revenue (Chart A), the 8-quarter historical OOS backtest (Chart C), and this new ${esc(s.forecast_quarter)}
+      forward forecast are three distinct things - the backtest describes past performance only and this forecast is a scenario
+      estimate, not a demonstrated prediction. Based on only ${s.historical_oos_n || 8} OOS quarters; not proof of future predictive
+      performance. Kept separate from the LLM/Agent Observability catalyst discussion (Section 3) &mdash; no revenue uplift is
+      attributed to that catalyst here.
+    </div>`;
+}
+
+function renderOpRead(){
+  document.getElementById('opGrid').innerHTML = OP_READ.modules.map(m=>
+    `<div class="op-item"><div class="lbl">${esc(m.name)}</div><span class="state-pill ${statePillClass(m.state)}">${esc(m.state)}</span></div>`
+  ).join('');
+  document.getElementById('opSummary').innerHTML = OP_READ.summary;
+}
+function renderForwardRead(){
+  document.getElementById('forwardRead').innerHTML = FORWARD_READ.map(r =>
+    `<div class="fwd-row"><div class="fwd-label">${esc(r.label)}</div><div>${r.text}</div></div>`
+  ).join('');
+}
+
+/* ===================================================== SECTION 5 ===================================================== */
+function renderMethodology(){
+  document.getElementById('methodAccordions').innerHTML = METHOD.map((m,i)=>`
+    <details class="method" ${i===0?'open':''}>
+      <summary>${esc(m.name)}</summary>
+      <div class="method-body">
+        <div class="method-grid">
+          <div class="k">Frequency</div><div>${m.frequency}</div>
+          <div class="k">History</div><div>${m.history}</div>
+          <div class="k">Lag used</div><div>${m.lag}</div>
+          <div class="k">Economic rationale</div><div>${m.rationale}</div>
+          <div class="k">Main limitation</div><div>${m.limitation}</div>
+          <div class="k">Used in revenue model</div><div><b>${m.used}</b></div>
+        </div>
+      </div>
+    </details>`).join('');
+  document.getElementById('excludedList').innerHTML = EXCLUDED.map(e=>`<li><b>${esc(e.name)}:</b> ${e.reason}</li>`).join('');
+}
+
+/* ===================================================== toggles ===================================================== */
+document.getElementById('chartAToggle').addEventListener('click', function(e){
+  if(!e.target.classList.contains('toggle-btn')) return;
+  document.querySelectorAll('#chartAToggle .toggle-btn').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  try{ renderChartA(e.target.dataset.mode); }catch(err){ console.error(err); }
+});
+document.getElementById('lagToggle').addEventListener('click', function(e){
+  if(!e.target.classList.contains('toggle-btn')) return;
+  document.querySelectorAll('#lagToggle .toggle-btn').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  try{ renderChartB(parseInt(e.target.dataset.lag, 10)); }catch(err){ console.error(err); }
+});
+document.getElementById('metricToggle').addEventListener('click', function(e){
+  if(!e.target.classList.contains('toggle-btn')) return;
+  document.querySelectorAll('#metricToggle .toggle-btn').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  try{ renderChartC(e.target.dataset.view); }catch(err){ console.error(err); }
+});
+
+/* ===================================================== init (each section isolated so one failure - e.g. a
+   blocked CDN - can never take down unrelated sections like the methodology accordions) ===================================================== */
+function safe(name, fn){
+  try{ fn(); }
+  catch(err){
+    console.error('Dashboard section failed: ' + name, err);
+    const targets = {chartA:'chartA', chartB:'chartB', chartC:'chartC', timeline:'timeline', forecast:'forecastContent'};
+    if(targets[name]){
+      const el = document.getElementById(targets[name]);
+      if(el) el.innerHTML = '<div style="padding:30px;text-align:center;color:#999;font-size:12px;">Chart failed to render (' + esc(err.message||err) + '). Data is intact in the page source.</div>';
+    }
+  }
+}
+safe('kpi', renderKPI);
+safe('chartA', ()=>renderChartA('aligned'));
+safe('chartB', ()=>renderChartB(2));
+safe('chartC', ()=>renderChartC('error'));
+safe('chartCHighlight', renderChartCHighlight);
+safe('forecast', renderForecast);
+safe('timeline', renderTimeline);
+safe('sourceAudit', renderSourceAudit);
+safe('opread', renderOpRead);
+safe('forwardread', renderForwardRead);
+safe('methodology', renderMethodology);
+</script>
+
+</body>
+</html>

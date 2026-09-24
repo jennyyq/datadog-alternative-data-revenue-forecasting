@@ -1,0 +1,7 @@
+# Core dependencies for the supplied revenue-forecast and HTML-dashboard scripts.
+# Other research/collection scripts may need additional packages; see README.md.
+numpy>=1.24,<3
+pandas>=2.0,<3
+scipy>=1.10,<2
+matplotlib>=3.7,<4
+pytrends==4.9.2

@@ -1,0 +1,59 @@
+{
+  "start": "2021-01-01",
+  "end": "2026-06-30",
+  "geo": "worldwide",
+  "primary_query": {
+    "label": "term:Datadog",
+    "google_query_value": "Datadog",
+    "suggestions": [
+      {
+        "mid": "/g/11c2khmpz2",
+        "title": "Datadog",
+        "type": "Topic"
+      },
+      {
+        "mid": "/m/0wfvvyq",
+        "title": "Datadog",
+        "type": "Software company"
+      },
+      {
+        "mid": "/g/11q7zzphpc",
+        "title": "datadog",
+        "type": "Topic"
+      },
+      {
+        "mid": "/g/11f04rplhj",
+        "title": "Jerry Neumann",
+        "type": "Investor"
+      },
+      {
+        "mid": "/g/11j3rw9sh_",
+        "title": "Datadog",
+        "type": "Software company in the Chiyoda, Tokyo, Japan"
+      }
+    ]
+  },
+  "primary_repeat_stability": {
+    "n_points": 66,
+    "n_repeats": 3,
+    "mean_spread": 0.0,
+    "max_spread": 0.0,
+    "min_pairwise_corr": 1.0,
+    "mean_of_means": 40.40909090909091
+  },
+  "qualifier_terms": {
+    "Datadog APM": {
+      "nonzero_share": 1.0,
+      "included_in_primary": true
+    },
+    "Datadog logs": {
+      "nonzero_share": 1.0,
+      "included_in_primary": true
+    },
+    "Datadog monitoring": {
+      "nonzero_share": 1.0,
+      "included_in_primary": true
+    }
+  },
+  "primary_series_used": "mean of Datadog + ['Datadog APM', 'Datadog logs', 'Datadog monitoring']"
+}

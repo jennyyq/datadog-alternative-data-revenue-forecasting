@@ -1,0 +1,5 @@
+panel,model,n_oos,MAE,RMSE,MAPE_pct,Directional_Accuracy_pct,alpha
+main,Ridge_Cloud+Trends,8,2.6661,3.2873,9.9098,50.0,10.0
+main,Ridge_AR+Cloud+Trends,8,1.9232,2.2103,7.1564,50.0,10.0
+post2022,Ridge_Cloud+Trends,7,2.6554,3.0579,8.8216,14.2857,10.0
+post2022,Ridge_AR+Cloud+Trends,7,2.7176,3.122,8.9609,14.2857,10.0

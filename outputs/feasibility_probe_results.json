@@ -1,0 +1,403 @@
+{
+  "A": {
+    "candidate": "A",
+    "geo": "worldwide",
+    "status": "NOT_RUN",
+    "reason": "pip install pytrends (unofficial wrapper; not maintained by Google)"
+  },
+  "B": {
+    "candidate": "B_HN_variant",
+    "threads_found": 66,
+    "threads_expected": 66,
+    "thread_sample": [
+      {
+        "n_posts": 703,
+        "n_deleted": 0,
+        "dd_own_posts_excluded": 1,
+        "dd_mentions_third_party": 4,
+        "dd_apm": 0,
+        "dd_and_observability": 0,
+        "thread_id": "25632982",
+        "thread_date": "2021-01-04",
+        "dd_share_of_posts": 0.005689900426742532,
+        "poisson_rel_se_of_count": 0.5
+      },
+      {
+        "n_posts": 661,
+        "n_deleted": 0,
+        "dd_own_posts_excluded": 1,
+        "dd_mentions_third_party": 2,
+        "dd_apm": 0,
+        "dd_and_observability": 0,
+        "thread_id": "29782099",
+        "thread_date": "2022-01-03",
+        "dd_share_of_posts": 0.0030257186081694403,
+        "poisson_rel_se_of_count": 0.7071067811865475
+      },
+      {
+        "n_posts": 363,
+        "n_deleted": 0,
+        "dd_own_posts_excluded": 1,
+        "dd_mentions_third_party": 0,
+        "dd_apm": 0,
+        "dd_and_observability": 0,
+        "thread_id": "34219335",
+        "thread_date": "2023-01-02",
+        "dd_share_of_posts": 0.0,
+        "poisson_rel_se_of_count": null
+      },
+      {
+        "n_posts": 278,
+        "n_deleted": 0,
+        "dd_own_posts_excluded": 1,
+        "dd_mentions_third_party": 1,
+        "dd_apm": 0,
+        "dd_and_observability": 0,
+        "thread_id": "38842977",
+        "thread_date": "2024-01-02",
+        "dd_share_of_posts": 0.0035971223021582736,
+        "poisson_rel_se_of_count": 1.0
+      },
+      {
+        "n_posts": 276,
+        "n_deleted": 0,
+        "dd_own_posts_excluded": 0,
+        "dd_mentions_third_party": 3,
+        "dd_apm": 0,
+        "dd_and_observability": 0,
+        "thread_id": "42575537",
+        "thread_date": "2025-01-02",
+        "dd_share_of_posts": 0.010869565217391304,
+        "poisson_rel_se_of_count": 0.5773502691896258
+      },
+      {
+        "n_posts": 257,
+        "n_deleted": 0,
+        "dd_own_posts_excluded": 0,
+        "dd_mentions_third_party": 5,
+        "dd_apm": 0,
+        "dd_and_observability": 1,
+        "thread_id": "46466074",
+        "thread_date": "2026-01-02",
+        "dd_share_of_posts": 0.019455252918287938,
+        "poisson_rel_se_of_count": 0.4472135954999579
+      }
+    ],
+    "status": "TESTED"
+  },
+  "C": {
+    "candidate": "C",
+    "repos": {
+      "core": {
+        "quarter_counts": [
+          {
+            "quarter": "2021 Q1",
+            "quarter_end": "2021-03-31",
+            "commit": "8b23ba909",
+            "n_integrations": 167
+          },
+          {
+            "quarter": "2021 Q2",
+            "quarter_end": "2021-06-30",
+            "commit": "099995aee",
+            "n_integrations": 170
+          },
+          {
+            "quarter": "2021 Q3",
+            "quarter_end": "2021-09-30",
+            "commit": "83b1348d6",
+            "n_integrations": 176
+          },
+          {
+            "quarter": "2021 Q4",
+            "quarter_end": "2021-12-31",
+            "commit": "8084d6fce",
+            "n_integrations": 179
+          },
+          {
+            "quarter": "2022 Q1",
+            "quarter_end": "2022-03-31",
+            "commit": "f3c487583",
+            "n_integrations": 188
+          },
+          {
+            "quarter": "2022 Q2",
+            "quarter_end": "2022-06-30",
+            "commit": "7bf7924dd",
+            "n_integrations": 195
+          },
+          {
+            "quarter": "2022 Q3",
+            "quarter_end": "2022-09-30",
+            "commit": "a454afcdf",
+            "n_integrations": 198
+          },
+          {
+            "quarter": "2022 Q4",
+            "quarter_end": "2022-12-31",
+            "commit": "b105866a9",
+            "n_integrations": 201
+          },
+          {
+            "quarter": "2023 Q1",
+            "quarter_end": "2023-03-31",
+            "commit": "7eda1f651",
+            "n_integrations": 209
+          },
+          {
+            "quarter": "2023 Q2",
+            "quarter_end": "2023-06-30",
+            "commit": "babe52e44",
+            "n_integrations": 213
+          },
+          {
+            "quarter": "2023 Q3",
+            "quarter_end": "2023-09-30",
+            "commit": "c7746adff",
+            "n_integrations": 220
+          },
+          {
+            "quarter": "2023 Q4",
+            "quarter_end": "2023-12-31",
+            "commit": "17bea458a",
+            "n_integrations": 222
+          },
+          {
+            "quarter": "2024 Q1",
+            "quarter_end": "2024-03-31",
+            "commit": "de516ffa1",
+            "n_integrations": 233
+          },
+          {
+            "quarter": "2024 Q2",
+            "quarter_end": "2024-06-30",
+            "commit": "40193a9e2",
+            "n_integrations": 239
+          },
+          {
+            "quarter": "2024 Q3",
+            "quarter_end": "2024-09-30",
+            "commit": "c1e85309a",
+            "n_integrations": 272
+          },
+          {
+            "quarter": "2024 Q4",
+            "quarter_end": "2024-12-31",
+            "commit": "e6b077a2f",
+            "n_integrations": 296
+          },
+          {
+            "quarter": "2025 Q1",
+            "quarter_end": "2025-03-31",
+            "commit": "67cf3ad93",
+            "n_integrations": 326
+          },
+          {
+            "quarter": "2025 Q2",
+            "quarter_end": "2025-06-30",
+            "commit": "f9f78ed17",
+            "n_integrations": 351
+          },
+          {
+            "quarter": "2025 Q3",
+            "quarter_end": "2025-09-30",
+            "commit": "57d770191",
+            "n_integrations": 374
+          },
+          {
+            "quarter": "2025 Q4",
+            "quarter_end": "2025-12-31",
+            "commit": "0d1bcd19b",
+            "n_integrations": 381
+          },
+          {
+            "quarter": "2026 Q1",
+            "quarter_end": "2026-03-31",
+            "commit": "fb1f14eb5",
+            "n_integrations": 396
+          },
+          {
+            "quarter": "2026 Q2",
+            "quarter_end": "2026-06-30",
+            "commit": "665acb126",
+            "n_integrations": 400
+          }
+        ],
+        "history_stats": {
+          "total_additions": 422,
+          "total_removals": 21,
+          "largest_single_commit_addition": 8
+        },
+        "schema_share": {
+          "2021 Q1": {
+            "sampled": 40,
+            "legacy_categories": 40,
+            "classifier_tags": 0
+          },
+          "2026 Q2": {
+            "sampled": 40,
+            "legacy_categories": 0,
+            "classifier_tags": 40
+          }
+        },
+        "complete_quarters": 22
+      },
+      "extras": {
+        "quarter_counts": [
+          {
+            "quarter": "2021 Q1",
+            "quarter_end": "2021-03-31",
+            "commit": "8c40a9cf8",
+            "n_integrations": 82
+          },
+          {
+            "quarter": "2021 Q2",
+            "quarter_end": "2021-06-30",
+            "commit": "85f4bc776",
+            "n_integrations": 92
+          },
+          {
+            "quarter": "2021 Q3",
+            "quarter_end": "2021-09-30",
+            "commit": "14161afe9",
+            "n_integrations": 96
+          },
+          {
+            "quarter": "2021 Q4",
+            "quarter_end": "2021-12-31",
+            "commit": "8ed64dad7",
+            "n_integrations": 110
+          },
+          {
+            "quarter": "2022 Q1",
+            "quarter_end": "2022-03-31",
+            "commit": "df399d162",
+            "n_integrations": 116
+          },
+          {
+            "quarter": "2022 Q2",
+            "quarter_end": "2022-06-30",
+            "commit": "f82d2bdc0",
+            "n_integrations": 135
+          },
+          {
+            "quarter": "2022 Q3",
+            "quarter_end": "2022-09-30",
+            "commit": "2565b3975",
+            "n_integrations": 152
+          },
+          {
+            "quarter": "2022 Q4",
+            "quarter_end": "2022-12-31",
+            "commit": "ba4d2dea3",
+            "n_integrations": 165
+          },
+          {
+            "quarter": "2023 Q1",
+            "quarter_end": "2023-03-31",
+            "commit": "b835c23cf",
+            "n_integrations": 174
+          },
+          {
+            "quarter": "2023 Q2",
+            "quarter_end": "2023-06-30",
+            "commit": "f1f558b90",
+            "n_integrations": 186
+          },
+          {
+            "quarter": "2023 Q3",
+            "quarter_end": "2023-09-30",
+            "commit": "cab67214b",
+            "n_integrations": 198
+          },
+          {
+            "quarter": "2023 Q4",
+            "quarter_end": "2023-12-31",
+            "commit": "3264d649f",
+            "n_integrations": 208
+          },
+          {
+            "quarter": "2024 Q1",
+            "quarter_end": "2024-03-31",
+            "commit": "d4a8f0c0f",
+            "n_integrations": 213
+          },
+          {
+            "quarter": "2024 Q2",
+            "quarter_end": "2024-06-30",
+            "commit": "9c6f6e768",
+            "n_integrations": 220
+          },
+          {
+            "quarter": "2024 Q3",
+            "quarter_end": "2024-09-30",
+            "commit": "686edd23d",
+            "n_integrations": 224
+          },
+          {
+            "quarter": "2024 Q4",
+            "quarter_end": "2024-12-31",
+            "commit": "15f95806f",
+            "n_integrations": 235
+          },
+          {
+            "quarter": "2025 Q1",
+            "quarter_end": "2025-03-31",
+            "commit": "b45b70ab3",
+            "n_integrations": 239
+          },
+          {
+            "quarter": "2025 Q2",
+            "quarter_end": "2025-06-30",
+            "commit": "f4f476473",
+            "n_integrations": 249
+          },
+          {
+            "quarter": "2025 Q3",
+            "quarter_end": "2025-09-30",
+            "commit": "aac7d245e",
+            "n_integrations": 254
+          },
+          {
+            "quarter": "2025 Q4",
+            "quarter_end": "2025-12-31",
+            "commit": "e14748705",
+            "n_integrations": 254
+          },
+          {
+            "quarter": "2026 Q1",
+            "quarter_end": "2026-03-31",
+            "commit": "6eb582a76",
+            "n_integrations": 256
+          },
+          {
+            "quarter": "2026 Q2",
+            "quarter_end": "2026-06-30",
+            "commit": "9e7e3dc61",
+            "n_integrations": 259
+          }
+        ],
+        "history_stats": {
+          "total_additions": 282,
+          "total_removals": 21,
+          "largest_single_commit_addition": 2
+        },
+        "schema_share": {
+          "2021 Q1": {
+            "sampled": 40,
+            "legacy_categories": 40,
+            "classifier_tags": 0
+          },
+          "2026 Q2": {
+            "sampled": 40,
+            "legacy_categories": 0,
+            "classifier_tags": 40
+          }
+        },
+        "complete_quarters": 22
+      }
+    },
+    "status": "TESTED",
+    "marketplace_repo": "private (git demands credentials) -> marketplace integrations NOT reconstructible from public history"
+  }
+}

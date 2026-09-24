@@ -1,0 +1,7 @@
+target,k,spec,n_full,pearson_full,spearman_full,most_influential_quarter,pearson_excl_most_influential,shift_from_removing_it,n_excl_2025Q3,pearson_excl_2025Q3,spearman_excl_2025Q3,n_post2022,pearson_post2022,spearman_post2022
+DDOG_Revenue_YoY,0,Trend_YoY(t) vs Y(t): contemporaneous,18,0.7549,0.8184,2022 Q1,0.894,-0.1391,17,0.7836,0.8284,14,0.8235,0.6923
+DDOG_Revenue_YoY,1,Trend_YoY(t-1) vs Y(t): Trends leads 1Q,17,0.6446,0.6103,2022 Q2,0.8246,-0.18,16,0.6417,0.6559,14,0.6805,0.3582
+DDOG_Revenue_YoY,2,Trend_YoY(t-2) vs Y(t): Trends leads 2Q,16,0.4659,0.3735,2022 Q3,0.6608,-0.1949,15,0.4616,0.4286,14,0.4466,0.1516
+Customers_100k_YoY,0,Trend_YoY(t) vs Y(t): contemporaneous,18,0.7803,0.6594,2022 Q1,0.884,-0.1037,17,0.8162,0.6912,14,0.5244,0.3714
+Customers_100k_YoY,1,Trend_YoY(t-1) vs Y(t): Trends leads 1Q,17,0.7839,0.6569,2022 Q2,0.9342,-0.1503,16,0.7807,0.6735,14,0.8576,0.4462
+Customers_100k_YoY,2,Trend_YoY(t-2) vs Y(t): Trends leads 2Q,16,0.7675,0.7,2022 Q3,0.9148,-0.1473,15,0.7652,0.7429,14,0.9017,0.6

@@ -1,0 +1,195 @@
+{
+  "code_version": "1.0",
+  "start": "2021-01-01",
+  "end": "2026-06-30",
+  "packages": {
+    "pypi": "ddtrace",
+    "npm": "dd-trace"
+  },
+  "notes": [],
+  "npm": {
+    "endpoint": "https://api.npmjs.org/downloads/range/{start}:{end}/dd-trace",
+    "windows": 6,
+    "point_checks": [
+      {
+        "window": "2021-01-01:2021-12-31",
+        "daily_sum": 47476630,
+        "point_total": 47476630,
+        "match": true
+      },
+      {
+        "window": "2022-01-01:2022-12-31",
+        "daily_sum": 75048214,
+        "point_total": 75048214,
+        "match": true
+      },
+      {
+        "window": "2023-01-01:2023-12-31",
+        "daily_sum": 109619776,
+        "point_total": 109619776,
+        "match": true
+      },
+      {
+        "window": "2024-01-01:2024-12-30",
+        "daily_sum": 128929726,
+        "point_total": 128929726,
+        "match": true
+      },
+      {
+        "window": "2024-12-31:2025-12-30",
+        "daily_sum": 188812375,
+        "point_total": 188812375,
+        "match": true
+      },
+      {
+        "window": "2025-12-31:2026-06-30",
+        "daily_sum": 160628674,
+        "point_total": 160628674,
+        "match": true
+      }
+    ]
+  },
+  "pypi": {
+    "source": "ClickPy/ClickHouse pypi.pypi_downloads_per_day",
+    "endpoint": "https://sql-clickhouse.clickhouse.com:443/",
+    "user": "demo"
+  },
+  "http_log": [
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/range/2021-01-01:2021-12-31/dd-trace",
+      "status": 200,
+      "bytes": 14550,
+      "sha256": "3dc977fe0e6506a45b86a7eb4737e289c0569c91a1496e3890c7fd6ebdf438cc",
+      "retrieved_utc": "2026-09-23T18:36:51+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/point/2021-01-01:2021-12-31/dd-trace",
+      "status": 200,
+      "bytes": 83,
+      "sha256": "a19c636c66025bedf972c6d8dfeb96caed9da5815696926be9754e3d06270449",
+      "retrieved_utc": "2026-09-23T18:36:51+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/range/2022-01-01:2022-12-31/dd-trace",
+      "status": 200,
+      "bytes": 14565,
+      "sha256": "f842d7ebae0685862d33d6c8874e64bb33cc00e859cd8e011396215fd8ef72d1",
+      "retrieved_utc": "2026-09-23T18:36:52+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/point/2022-01-01:2022-12-31/dd-trace",
+      "status": 200,
+      "bytes": 83,
+      "sha256": "71b980df7589b9d0bf8c47ed6dc3ec78d1be230d00dd26abdef3ccdab446fbae",
+      "retrieved_utc": "2026-09-23T18:36:53+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/range/2023-01-01:2023-12-31/dd-trace",
+      "status": 200,
+      "bytes": 14565,
+      "sha256": "bdb87cb555c129c151e9d09509f237fc23fd225242b6962c8da1500dac9de8aa",
+      "retrieved_utc": "2026-09-23T18:36:54+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/point/2023-01-01:2023-12-31/dd-trace",
+      "status": 200,
+      "bytes": 84,
+      "sha256": "f4449164ef62009eb4ebb1ec1db570f86e187286211c7ce2128119a39d46cfd4",
+      "retrieved_utc": "2026-09-23T18:36:54+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/range/2024-01-01:2024-12-30/dd-trace",
+      "status": 200,
+      "bytes": 14571,
+      "sha256": "08b44d9f025c4a9fdff5b53c0d90e49b9aa4810fee4a515721ca99475acc953e",
+      "retrieved_utc": "2026-09-23T18:36:55+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/point/2024-01-01:2024-12-30/dd-trace",
+      "status": 200,
+      "bytes": 84,
+      "sha256": "eed301b25e77f44e25a58d47e4a55d0fb596c72fe5d4d3c72fda3661237bb529",
+      "retrieved_utc": "2026-09-23T18:36:56+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/range/2024-12-31:2025-12-30/dd-trace",
+      "status": 200,
+      "bytes": 14644,
+      "sha256": "10eac74671159d3e288e6880f1aa39e4aa23dc735244cd03331aef59fe250137",
+      "retrieved_utc": "2026-09-23T18:36:57+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/point/2024-12-31:2025-12-30/dd-trace",
+      "status": 200,
+      "bytes": 84,
+      "sha256": "18e761329f935f252bd0aa4970fdcb4a854606b65be78b503405b307b771128d",
+      "retrieved_utc": "2026-09-23T18:36:57+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/range/2025-12-31:2026-06-30/dd-trace",
+      "status": 200,
+      "bytes": 7445,
+      "sha256": "7dd80565028bb5002f63f91476d5526b2cd599f7e7252076a6ad150dc8d66800",
+      "retrieved_utc": "2026-09-23T18:36:58+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.npmjs.org/downloads/point/2025-12-31:2026-06-30/dd-trace",
+      "status": 200,
+      "bytes": 84,
+      "sha256": "aa87bfa87a0d6cfae3d32b7d8d1fb87bac419903c2f2db66d7c8beebff7cb9d1",
+      "retrieved_utc": "2026-09-23T18:36:59+00:00"
+    },
+    {
+      "method": "POST",
+      "url": "https://sql-clickhouse.clickhouse.com:443/?user=demo&default_format=JSONCompact",
+      "status": 200,
+      "bytes": 221,
+      "sha256": "fc6801c61ace65cf72594607261c5dfb18473f0423c8542327b7429550024f1a",
+      "retrieved_utc": "2026-09-23T18:37:00+00:00"
+    },
+    {
+      "method": "POST",
+      "url": "https://sql-clickhouse.clickhouse.com:443/?user=demo&default_format=JSONCompact",
+      "status": 200,
+      "bytes": 56127,
+      "sha256": "d50c388e86a3e9649e6b58b7fe8d164a02ad07c8b91f4b9d7c94a839693a5e49",
+      "retrieved_utc": "2026-09-23T18:37:00+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://pypistats.org/api/packages/ddtrace/overall",
+      "status": 200,
+      "bytes": 25106,
+      "sha256": "284d9387137376a18e3ad612ecbe3734592b1e517140966e756e96cfc2d8d834",
+      "retrieved_utc": "2026-09-23T18:37:01+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://registry.npmjs.org/dd-trace",
+      "status": 200,
+      "bytes": 5757002,
+      "sha256": "d10c91736e2d1af71b389065c40d1132cb1f39e232d5e2e636dcc93049f98451",
+      "retrieved_utc": "2026-09-23T18:37:01+00:00"
+    },
+    {
+      "method": "GET",
+      "url": "https://pypi.org/pypi/ddtrace/json",
+      "status": 200,
+      "bytes": 40493330,
+      "sha256": "332b088553403110bbe82f5e18b13322af7a95385ad524eda53aa2d786c2bb6a",
+      "retrieved_utc": "2026-09-23T18:37:03+00:00"
+    }
+  ]
+}

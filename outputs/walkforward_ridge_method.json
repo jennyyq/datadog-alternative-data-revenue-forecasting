@@ -1,0 +1,7 @@
+{
+  "alpha": 10.0,
+  "feature_scaling": "train-window only",
+  "intercept": "not penalized",
+  "lags": "unchanged from OLS",
+  "interpretation": "post-hoc exploratory; do not claim independent confirmatory OOS validation"
+}

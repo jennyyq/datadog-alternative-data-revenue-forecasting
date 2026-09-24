@@ -1,0 +1,25 @@
+X,Y,k,spec,n,pearson,spearman
+New_Total_Integrations,DDOG_Revenue_YoY,0,X(t) vs Y(t) contemporaneous,18,-0.11388148581111032,-0.24120199131932715
+New_Total_Integrations,DDOG_Revenue_YoY,1,X(t-1) vs Y(t): X leads by 1Q,17,-0.12504486294324355,-0.18819316317727025
+New_Total_Integrations,DDOG_Revenue_YoY,2,X(t-2) vs Y(t): X leads by 2Q,16,-0.10281945278892121,0.09579979195708953
+New_Total_Integrations,Customers_100k_YoY,0,X(t) vs Y(t) contemporaneous,18,-0.22416688498744122,-0.3385109491906437
+New_Total_Integrations,Customers_100k_YoY,1,X(t-1) vs Y(t): X leads by 1Q,17,-0.19695488368094236,-0.2041834319439664
+New_Total_Integrations,Customers_100k_YoY,2,X(t-2) vs Y(t): X leads by 2Q,16,-0.11775212356909627,-0.03537223087646383
+New_Core_Integrations,DDOG_Revenue_YoY,0,X(t) vs Y(t) contemporaneous,18,-0.3454255119042935,-0.3028427412330067
+New_Core_Integrations,DDOG_Revenue_YoY,1,X(t-1) vs Y(t): X leads by 1Q,17,-0.2583515904876021,-0.18416237491483956
+New_Core_Integrations,DDOG_Revenue_YoY,2,X(t-2) vs Y(t): X leads by 2Q,16,-0.1237452342738778,0.09285210605071754
+New_Core_Integrations,Customers_100k_YoY,0,X(t) vs Y(t) contemporaneous,18,-0.48233000017747224,-0.5684761354203197
+New_Core_Integrations,Customers_100k_YoY,1,X(t-1) vs Y(t): X leads by 1Q,17,-0.39409711874939474,-0.370780248161877
+New_Core_Integrations,Customers_100k_YoY,2,X(t-2) vs Y(t): X leads by 2Q,16,-0.26794621592313184,-0.19307342686736503
+New_Extras_Integrations,DDOG_Revenue_YoY,0,X(t) vs Y(t) contemporaneous,18,0.4715854268480149,0.1025915549260005
+New_Extras_Integrations,DDOG_Revenue_YoY,1,X(t-1) vs Y(t): X leads by 1Q,17,0.2906179766307718,-0.022154051702451008
+New_Extras_Integrations,DDOG_Revenue_YoY,2,X(t-2) vs Y(t): X leads by 2Q,16,0.0672068302102541,0.007391081920125386
+New_Extras_Integrations,Customers_100k_YoY,0,X(t) vs Y(t) contemporaneous,18,0.5361634724995794,0.38964065305228474
+New_Extras_Integrations,Customers_100k_YoY,1,X(t-1) vs Y(t): X leads by 1Q,17,0.43196387082113463,0.29661813668281634
+New_Extras_Integrations,Customers_100k_YoY,2,X(t-2) vs Y(t): X leads by 2Q,16,0.3496214721516641,0.2793828965807396
+Total_YoY_Growth,DDOG_Revenue_YoY,0,X(t) vs Y(t) contemporaneous,18,0.26943211960999625,0.1393188854489164
+Total_YoY_Growth,DDOG_Revenue_YoY,1,X(t-1) vs Y(t): X leads by 1Q,17,0.19237289587226783,0.28186274509803927
+Total_YoY_Growth,DDOG_Revenue_YoY,2,X(t-2) vs Y(t): X leads by 2Q,16,0.1540852617606446,0.4147058823529412
+Total_YoY_Growth,Customers_100k_YoY,0,X(t) vs Y(t) contemporaneous,18,0.3003228422199796,0.16821465428276572
+Total_YoY_Growth,Customers_100k_YoY,1,X(t-1) vs Y(t): X leads by 1Q,17,0.33736229432590475,0.40441176470588236
+Total_YoY_Growth,Customers_100k_YoY,2,X(t-2) vs Y(t): X leads by 2Q,16,0.4161487585668269,0.6411764705882352

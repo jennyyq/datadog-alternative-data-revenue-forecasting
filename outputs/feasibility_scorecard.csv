@@ -1,0 +1,4 @@
+candidate,historical_coverage,reproducibility,frequency,economic_connection,cleaning_ease,low_bias_risk,total_of_30,evidence_basis
+A Google Trends,5,3,4,3,4,3,22,documentation + peer-reviewed literature; NOT live-tested (host blocked in the build sandbox)
+B Job postings (HN-only variant),5,5,3,3,3,2,21,API docs + design; NOT live-tested (hosts blocked in the build sandbox). Broad job-market source: FAIL (no free keyword-level history; Indeed Hiring Lab data are aggregate indices only)
+C Integration ecosystem (public repos),5,5,5,2,4,3,24,LIVE-TESTED end-to-end

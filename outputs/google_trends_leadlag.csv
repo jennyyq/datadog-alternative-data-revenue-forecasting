@@ -1,0 +1,13 @@
+signal,signal_role,target,k,spec,n,pearson,spearman
+Trend_YoY,PRIMARY,DDOG_Revenue_YoY,0,Trend_YoY(t) vs Y(t): contemporaneous,18,0.7549,0.8184
+Trend_YoY,PRIMARY,DDOG_Revenue_YoY,1,Trend_YoY(t-1) vs Y(t): Trends leads 1Q,17,0.6446,0.6103
+Trend_YoY,PRIMARY,DDOG_Revenue_YoY,2,Trend_YoY(t-2) vs Y(t): Trends leads 2Q,16,0.4659,0.3735
+Trend_YoY,PRIMARY,Customers_100k_YoY,0,Trend_YoY(t) vs Y(t): contemporaneous,18,0.7803,0.6594
+Trend_YoY,PRIMARY,Customers_100k_YoY,1,Trend_YoY(t-1) vs Y(t): Trends leads 1Q,17,0.7839,0.6569
+Trend_YoY,PRIMARY,Customers_100k_YoY,2,Trend_YoY(t-2) vs Y(t): Trends leads 2Q,16,0.7675,0.7
+Quarterly_Trend_Mean,"SECONDARY (level, descriptive)",DDOG_Revenue_YoY,0,Trend_YoY(t) vs Y(t): contemporaneous,18,-0.3439,-0.2508
+Quarterly_Trend_Mean,"SECONDARY (level, descriptive)",DDOG_Revenue_YoY,1,Trend_YoY(t-1) vs Y(t): Trends leads 1Q,17,-0.2906,-0.1863
+Quarterly_Trend_Mean,"SECONDARY (level, descriptive)",DDOG_Revenue_YoY,2,Trend_YoY(t-2) vs Y(t): Trends leads 2Q,16,-0.1764,-0.0529
+Quarterly_Trend_Mean,"SECONDARY (level, descriptive)",Customers_100k_YoY,0,Trend_YoY(t) vs Y(t): contemporaneous,18,-0.3875,-0.5232
+Quarterly_Trend_Mean,"SECONDARY (level, descriptive)",Customers_100k_YoY,1,Trend_YoY(t-1) vs Y(t): Trends leads 1Q,17,-0.3253,-0.4657
+Quarterly_Trend_Mean,"SECONDARY (level, descriptive)",Customers_100k_YoY,2,Trend_YoY(t-2) vs Y(t): Trends leads 2Q,16,-0.2427,-0.3618

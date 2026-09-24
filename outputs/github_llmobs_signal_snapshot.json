@@ -1,0 +1,294 @@
+{
+  "authenticated": false,
+  "rate_limit": {
+    "code_search": {
+      "limit": 60,
+      "remaining": 54
+    },
+    "core": {
+      "limit": 60,
+      "remaining": 54
+    },
+    "search": {
+      "limit": 10,
+      "remaining": 10
+    }
+  },
+  "code_search": {
+    "http": 401,
+    "usable": false,
+    "message": "Requires authentication"
+  },
+  "commit_search": {
+    "DD_LLMOBS_ENABLED": {
+      "http": 200,
+      "total_count": 207,
+      "incomplete_results": false,
+      "sample": [
+        {
+          "repo": "getsentry/firetower",
+          "date": "2026-09-22",
+          "message_first_line": "chore(deps-dev): Bump ddtrace from 4.8.2 to 4.15.1 (#335)"
+        },
+        {
+          "repo": "EvaUnit09/Moody",
+          "date": "2026-09-17",
+          "message_first_line": "fix: repair Datadog tracer config for ddtrace v4 (#8)"
+        },
+        {
+          "repo": "EvaUnit09/Moody",
+          "date": "2026-09-16",
+          "message_first_line": "Add Datadog Observability and Evaluation Harness (#1)"
+        },
+        {
+          "repo": "coopnorge/go-datadog-lib",
+          "date": "2026-09-15",
+          "message_first_line": "fix(deps): update dd-trace-go packages to v2.10.1 (#859)"
+        },
+        {
+          "repo": "snacksnack/ai-incident-summarizer",
+          "date": "2026-09-14",
+          "message_first_line": "RC1-445: document ddtrace as the one fleet tracer"
+        }
+      ],
+      "datadog_adjacent_org_hits_in_sample": []
+    },
+    "LLMObs.enable": {
+      "http": 200,
+      "total_count": 231,
+      "incomplete_results": false,
+      "sample": [
+        {
+          "repo": "jagreehal/autotel-python",
+          "date": "2026-09-22",
+          "message_first_line": "feat: export log records over OTLP, flush(), and a fuller Datadog preset (#10)"
+        },
+        {
+          "repo": "getsentry/firetower",
+          "date": "2026-09-22",
+          "message_first_line": "chore(deps-dev): Bump ddtrace from 4.8.2 to 4.15.1 (#335)"
+        },
+        {
+          "repo": "EvaUnit09/Moody",
+          "date": "2026-09-17",
+          "message_first_line": "LLMObs query+context vars for hallucination eval (#9)"
+        },
+        {
+          "repo": "EvaUnit09/Moody",
+          "date": "2026-09-17",
+          "message_first_line": "fix: repair Datadog tracer config for ddtrace v4 (#8)"
+        },
+        {
+          "repo": "snacksnack/tpm-automation-platform",
+          "date": "2026-09-17",
+          "message_first_line": "RC1-453: name the drift service after its catalog entity"
+        }
+      ],
+      "datadog_adjacent_org_hits_in_sample": []
+    },
+    "llmobs_enabled": {
+      "http": 200,
+      "total_count": 228,
+      "incomplete_results": false,
+      "sample": [
+        {
+          "repo": "getsentry/firetower",
+          "date": "2026-09-22",
+          "message_first_line": "chore(deps-dev): Bump ddtrace from 4.8.2 to 4.15.1 (#335)"
+        },
+        {
+          "repo": "EvaUnit09/Moody",
+          "date": "2026-09-17",
+          "message_first_line": "fix: repair Datadog tracer config for ddtrace v4 (#8)"
+        },
+        {
+          "repo": "EvaUnit09/Moody",
+          "date": "2026-09-16",
+          "message_first_line": "Add Datadog Observability and Evaluation Harness (#1)"
+        },
+        {
+          "repo": "datadog-labs/agent-skills",
+          "date": "2026-09-16",
+          "message_first_line": "Make the evaluator the deliverable, not an optional last step"
+        },
+        {
+          "repo": "jaywedgeworth22/Socratic-Trade",
+          "date": "2026-09-15",
+          "message_first_line": "Eliminate Datadog LLMObs duplicate invocation on error, add safe Red Team JSON parsing & fallback, a"
+        }
+      ],
+      "datadog_adjacent_org_hits_in_sample": [
+        "datadog-labs/agent-skills"
+      ]
+    }
+  },
+  "repo_search": {
+    "DD_LLMOBS_ENABLED in:readme": {
+      "http": 200,
+      "total_count": 112,
+      "sample": [
+        {
+          "repo": "datadog-labs/agent-skills",
+          "created": "2026-02-03",
+          "pushed": "2026-09-17",
+          "description": "Public repository for Datadog Agent Skills"
+        },
+        {
+          "repo": "darenmeisa/jkt-hackathon-2026",
+          "created": "2026-05-25",
+          "pushed": "2026-06-22",
+          "description": ""
+        },
+        {
+          "repo": "GaggleAMP/langchainrb_datadog",
+          "created": "2024-10-12",
+          "pushed": "2025-05-22",
+          "description": "Enables LLM observability with Datadog for Langchain.rb"
+        },
+        {
+          "repo": "Harpita-P/Storytopia-LLMObs",
+          "created": "2025-12-29",
+          "pushed": "2025-12-31",
+          "description": "Winner (2nd Place) of the Datadog x Google AI Partner Hackathon 2025. A Datadog-powered st"
+        },
+        {
+          "repo": "Kyle-Verhoog/datadog-python",
+          "created": "2021-11-19",
+          "pushed": "2026-08-18",
+          "description": "kyle's vision of how datadog's python client should look"
+        },
+        {
+          "repo": "yafernandes/agentic-ai",
+          "created": "2025-06-27",
+          "pushed": "2025-08-27",
+          "description": ""
+        },
+        {
+          "repo": "0Shark/gemini-meet",
+          "created": "2025-11-24",
+          "pushed": "2026-01-01",
+          "description": "AI Agent platform for online meeting agents with Google Vertex AI, Datadog and Elevenlabs "
+        },
+        {
+          "repo": "giovanniperalto/gcp-agentic-demo",
+          "created": "2025-12-09",
+          "pushed": "2026-06-02",
+          "description": ""
+        }
+      ]
+    },
+    "llmobs in:name,description": {
+      "http": 200,
+      "total_count": 34,
+      "sample": [
+        {
+          "repo": "Wangjw6/LLMob",
+          "created": "2024-02-29",
+          "pushed": "2026-03-17",
+          "description": "LLMob is an intuitive framework that builds reasoning logic for LLMs in the context of per"
+        },
+        {
+          "repo": "Harpita-P/Storytopia-LLMObs",
+          "created": "2025-12-29",
+          "pushed": "2025-12-31",
+          "description": "Winner (2nd Place) of the Datadog x Google AI Partner Hackathon 2025. A Datadog-powered st"
+        },
+        {
+          "repo": "CommunityHackathons/LLMObservabilitySystem_Ugo",
+          "created": "2025-06-01",
+          "pushed": "2025-06-11",
+          "description": "Project Name: LLM Observability System / Group Name: Ugo / Participant Name: Ugochukwu Osu"
+        },
+        {
+          "repo": "battlehopper/llmobs",
+          "created": "2026-04-02",
+          "pushed": "2026-04-02",
+          "description": "server"
+        },
+        {
+          "repo": "m7mdhka/llmobs",
+          "created": "2026-07-09",
+          "pushed": "2026-07-19",
+          "description": ""
+        },
+        {
+          "repo": "Marcos-Miranda/llmobs",
+          "created": "2025-10-19",
+          "pushed": "2025-10-19",
+          "description": ""
+        },
+        {
+          "repo": "obiyann/llmobs",
+          "created": "2025-04-07",
+          "pushed": "2025-04-21",
+          "description": "LLM Obs for a chatbot built on AWS Lambda and Bedrock"
+        },
+        {
+          "repo": "nuttea/hermes-datadog-llmobs",
+          "created": "2026-08-03",
+          "pushed": "2026-08-03",
+          "description": "Standalone Hermes Agent plugin for Datadog LLM Observability (LLMObs)"
+        }
+      ]
+    },
+    "\"agent observability\" datadog in:readme": {
+      "http": 200,
+      "total_count": 349,
+      "sample": [
+        {
+          "repo": "datadog-labs/agent-skills",
+          "created": "2026-02-03",
+          "pushed": "2026-09-17",
+          "description": "Public repository for Datadog Agent Skills"
+        },
+        {
+          "repo": "microsoft/WhatTheHack",
+          "created": "2018-09-17",
+          "pushed": "2026-09-11",
+          "description": "A collection of challenge based hack-a-thons including student guide, coach guide, lecture"
+        },
+        {
+          "repo": "OneUptime/oneuptime",
+          "created": "2021-06-27",
+          "pushed": "2026-09-24",
+          "description": "Complete open-source monitoring and observability platform."
+        },
+        {
+          "repo": "aws-samples/sample-aws-genai-ops-demos",
+          "created": "2025-12-10",
+          "pushed": "2026-09-24",
+          "description": "Deployable code samples demonstrating how generative AI transforms cloud operations. Deplo"
+        },
+        {
+          "repo": "magsther/awesome-opentelemetry",
+          "created": "2022-02-10",
+          "pushed": "2026-06-09",
+          "description": "A curated list of OpenTelemetry resources"
+        },
+        {
+          "repo": "msfirebird/claw-lens",
+          "created": "2026-04-08",
+          "pushed": "2026-04-15",
+          "description": "Open-source observability dashboard for OpenClaw daemons \u2014 cost analyti cs, live monitor i"
+        },
+        {
+          "repo": "BagelHole/DevOps-Security-Agent-Skills",
+          "created": "2026-01-27",
+          "pushed": "2026-05-22",
+          "description": "Agent-ready DevOps, security, infrastructure, and compliance knowledge base with 80+ skill"
+        },
+        {
+          "repo": "shospodarets/awesome-platform-engineering",
+          "created": "2023-01-21",
+          "pushed": "2026-09-13",
+          "description": "Curated list of tools and resources for Platform Engineering"
+        }
+      ]
+    }
+  },
+  "verdict": {
+    "current_snapshot_signal_feasible": "YES",
+    "historical_quarterly_series_feasible": "NOT ASSESSED - not required for an emerging-catalyst tracker; see the general GitHub-adoption feasibility test done earlier in this project for why a historical series specifically would be hard (message-only commit search, no content-level date history without an authenticated code-search key).",
+    "recommended_use": "A periodic (e.g. monthly) snapshot of repo_search total_counts and commit_search total_counts, re-run with an authenticated token to also enable code_search. Track the counts themselves going forward rather than trying to backfill history that the API cannot provide."
+  }
+}

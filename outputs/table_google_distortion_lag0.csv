@@ -1,0 +1,9 @@
+,value
+"corr(Raw, exGoogle) full sample",0.9305928366505707
+"corr(Raw, exGoogle) excl. last 3Q",0.990972626097961
+"corr(Raw, Google) full",0.9452735461126045
+"corr(Raw, Google) excl. last 3Q",0.9514290509486769
+"corr(DDOG, Raw) full",0.45506754729789095
+"corr(DDOG, exGoogle) full",0.6869062296054531
+"corr(DDOG, Raw) excl. last 3Q",0.8677136956160592
+"corr(DDOG, exGoogle) excl. last 3Q",0.869609904433839

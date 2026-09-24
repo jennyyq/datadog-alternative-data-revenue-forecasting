@@ -1,0 +1,2 @@
+x,y,n,pearson_r,spearman_rho,most_influential_quarter,pearson_excl_most_influential
+Trend_YoY(t-2),Customers_100k_YoY(t),16,0.7675,0.7,2022 Q3,0.9148

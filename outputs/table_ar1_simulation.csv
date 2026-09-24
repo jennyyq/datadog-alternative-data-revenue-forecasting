@@ -1,0 +1,13 @@
+case,k,obs_r,p_sim_two_sided
+"levels, AR(1) phi fitted (index 0.86, DDOG 0.96)",0,0.45506754729789106,0.35715
+"levels, AR(1) phi fitted (index 0.86, DDOG 0.96)",1,0.7117477920681997,0.094
+"levels, AR(1) phi fitted (index 0.86, DDOG 0.96)",2,0.8573335909222788,0.01485
+"levels, AR(1) phi fitted (index 0.86, DDOG 0.96)","max over k=0,1,2",0.8573335909222788,0.0287
+"levels, stress phi = 0.85 both",0,0.45506754729789106,0.30825
+"levels, stress phi = 0.85 both",1,0.7117477920681997,0.06525
+"levels, stress phi = 0.85 both",2,0.8573335909222788,0.00815
+"levels, stress phi = 0.85 both","max over k=0,1,2",0.8573335909222788,0.0157
+"first differences, phi fitted (0.76, 0.85)",0,0.8039904144723605,0.01365
+"first differences, phi fitted (0.76, 0.85)",1,0.731698684245729,0.0429
+"first differences, phi fitted (0.76, 0.85)",2,0.6413753229184478,0.1098
+"first differences, phi fitted (0.76, 0.85)","max over k=0,1,2",0.8039904144723605,0.03465
